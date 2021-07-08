@@ -17,7 +17,7 @@
 [data-theme="dark"] {
     --background-color: #000000;
     --text-color: #fff;
-    --title-name: rgb(255, 233, 133);
+    --title-name: rgb(255, 255, 255);
     --border-color: #CCCCCC;
     --dust-bin: #FF8C93;
     --button-color: #5C5C5C;
@@ -73,9 +73,6 @@ body{
 }
 
 .header{
-    position: sticky;
-    top: 0;
-    left: 0;
     height: 5rem;
     width: 100vw;
     display: flex;
@@ -216,6 +213,7 @@ body{
     }
     table{
         margin-top: 2rem;
+        margin-bottom: 2rem;
         width: 95%;
         border-collapse: collapse;
         background-color: var(--table-body);
