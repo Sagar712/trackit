@@ -38,7 +38,7 @@ function DataAppend(items) {
     
     downloadedOriginal.items = items;
     
-        if(localStorage.getItem("ListTableDataSolo")==null){
+        if(localStorage.getItem("TrackItData")==null){
             const masterdb = {
                 items : {
                     
@@ -46,9 +46,9 @@ function DataAppend(items) {
             }
     
             let db = JSON.stringify(masterdb);
-            localStorage.setItem("ListTableDataSolo", db);
+            localStorage.setItem("TrackItData", db);
         }
-        let originalDb = JSON.parse(localStorage.getItem("ListTableDataSolo"));
+        let originalDb = JSON.parse(localStorage.getItem("TrackItData"));
         console.log(originalDb);
         let j=1;
         while(originalDb.items[j]!=null){
@@ -61,7 +61,7 @@ function DataAppend(items) {
             i++;    
         }
         
-        localStorage.setItem("ListTableDataSolo", JSON.stringify(originalDb));
+        localStorage.setItem("TrackItData", JSON.stringify(originalDb));
 }
 
 function exportFile() {
@@ -70,11 +70,11 @@ function exportFile() {
 
         }
     };
-    let listDb = JSON.parse(localStorage.getItem("ListTableDataSolo"));
+    let listDb = JSON.parse(localStorage.getItem("TrackItData"));
     if(listDb != null)
         masterDb.items = listDb.items;
     console.log(masterDb);
-    download(JSON.stringify(masterDb), "List-Data.json", "text/plain");
+    download(JSON.stringify(masterDb), "List-Track-Data.json", "text/plain");
 }
 
 
