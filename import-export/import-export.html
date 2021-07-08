@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link
+      rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v5.15.1/css/all.css"
+      integrity="sha384-vp86vTRFVJgpjF9jiIGPEEqYqlDwgyBgEF109VFjmqGmIY/Y4HV4d3Gp2irVfcrp"
+      crossorigin="anonymous"
+    />
+
+    <link rel="shortcut icon" href="../Sparrow.png" type="image/x-icon">
+    <link rel="stylesheet" href="./import-export.css">
+    <title>Import-Export</title>
+</head>
+<body>
+    <div class="backbtnar">
+        <div class="backBtn" onclick="location.href='../'"><i class="fas fa-chevron-left"> </i>  back</div>
+    </div>
+
+    <div class="allboxes">
+        <div class="box">
+            <p>
+                Export all encryted text to your device which you can later revoke here by importing.
+                File will be stored in downloads folder with name <span style="color: rgb(255, 196, 0);">List-Data.json</span> 
+            </p>
+            <div class="butn">
+                <button onclick="exportFile()">
+                    export <i class="fas fa-upload"> </i>
+                </button>
+            </div>
+        </div>
+        <div class="box">
+            <p>
+                All imported items will be added on home page. 
+                You need to choose valid <span style="color: rgb(255, 196, 0);">List-Data.json</span>
+                to import items successfully.
+            </p>
+            <div class="butn">
+                <input type="file" class="inputFile">
+                <button style="background-color: rgb(194, 0, 74);" onclick="importHandle()">
+                    import <i class="fas fa-download"></i> </i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="./import-export.js"></script>
+</body>
+</html>

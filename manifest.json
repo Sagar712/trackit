@@ -1,0 +1,17 @@
+{
+    "name":"Tract It",
+    "short_name":"Tract It",
+    "start_url":".",
+    "background_color":"#fff",
+    "theme_color":"#C5000C",
+    "display":"standalone",
+    "icons":[
+        {
+            "src":"./Sparrow.png",
+            "sizes":"512x512",
+            "type":"image/png"
+        }
+        
+    ]
+
+}
