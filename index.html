@@ -35,17 +35,20 @@
     <div class="menuItems">
         <ul>
             <li onclick="location.href='./import-export/import-export.html'"><p>Export | Import</p></li>
-            <li onclick="location.href='./contact-us/contact.html'"><p>Contact</p></li>
+            <li onclick="SwitchDisplay()">
+                <p id="currentShow">Show Time</p>
+                <i class="far fa-calendar-alt" style="font-size: 1.3rem; margin-left: 3rem; font-weight: bolder;"></i>
+            </li>
             <li>
                 <p>Night</p>
                 <div class="toggleme" style="margin-left: 3.7rem;" onclick="toggleCirc()">
                     <div class="circle"></div>
                 </div>
             </li>
-            <li><p>Settings</p></li>
+            <li onclick="shareList()"><p>Share list</p> <i class="fab fa-whatsapp" style="font-size: 1.3rem; margin-left: 3.3rem; font-weight: bolder;"></i></li>
+            <li onclick="location.href='./contact-us/contact.html'"><p>Contact</p></li>
         </ul>
     </div>
-
     <div class="inpuTools">
         <div class="row1">
             <input type="text" id="nameOfItem" placeholder="Enter item name" autocomplete="off">
@@ -54,7 +57,7 @@
         <div class="row1">
             <div class="butnSet">
                 <button style="font-size: 1.5rem;" onclick="addval()"> + </button>
-                <button onclick="deleteList()"> <i class="fas fa-trash-alt"></i> </button>
+                <button onclick="deleteList()"> <i class="fas fa-trash-alt" ></i> </button>
             </div>
             <input type="number" id="quant" placeholder="Quantity">
         </div>

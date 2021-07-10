@@ -16,6 +16,30 @@ if(localStorage.getItem("DarkModeTrackIt") == "on"){
     dark=0;
 }
 
+function shareList() {
+    let masterDb = JSON.parse(localStorage.getItem("TrackItData"));
+    let tempStr = "Name  |  Price  |  Quantity%0a";
+    let j=1;
+    while(masterDb.items[j]!=null){
+        tempStr  = tempStr.concat(`${masterDb.items[j].name}  |  ${masterDb.items[j].price}  |  ${masterDb.items[j].quant}%0a`);
+        j++;
+    }
+    let names = [];
+    let quants = [];
+    let prices = [];
+    j=1, i=0;
+    while(masterDb.items[j]!=null){
+        names[i] = masterDb.items[j].name;
+        quants[i] = masterDb.items[j].quant;
+        prices[i++] = masterDb.items[j].price;
+        j++;
+    }
+    tempStr += "-----------------------------------%0a";
+    tempStr = tempStr.concat(`Total : ${totalcalcReturn(tempStr, names, quants, prices)}%0a`);
+    tempStr += "-----------------------------------%0a";
+    location.href = `whatsapp://send?text=${tempStr}`;
+}
+
 function toggleCirc() {
     document.querySelector('.circle').classList.toggle('move');
     document.querySelector('.toggleme').classList.toggle('move');
@@ -37,13 +61,17 @@ function toggleMenu() {
 }
 
 let celldata = document.getElementById("allcell");
+let currTimeShow = false;
 
 function addval(){
 
 	let name = document.getElementById("nameOfItem").value;
 	let quant = document.getElementById("quant").value;
 	let price = document.getElementById("price").value;
-	
+    let monthNames =["Jan","Feb","Mar","Apr",
+                      "May","Jun","Jul","Aug",
+                      "Sep", "Oct","Nov","Dec"];
+    let day = new Date();
     if(localStorage.getItem("TrackItData") == null){
         const masterdb = {
             items : {
@@ -65,11 +93,15 @@ function addval(){
     masterDb.items[j] = {
         name:name,
         quant:quant,
-        price:price
+        price:price,
+        timeNow:`${day.getDate()} ${monthNames[day.getMonth()]} ${day.getFullYear()}`
     }
+    console.log(masterDb)
     localStorage.setItem("TrackItData", JSON.stringify(masterDb));
-
-    displayList();
+    if(currTimeShow)
+        SwitchDisplay();
+    else
+        displayList();
 }
 
 function displayList() {
@@ -81,7 +113,6 @@ function displayList() {
     </tr>`;
     if(localStorage.getItem("TrackItData") != null){
         let masterDb = JSON.parse(localStorage.getItem("TrackItData"));
-        console.log(masterDb);
         let j=1;
         while(masterDb.items[j]!=null){
             j++;
@@ -108,6 +139,59 @@ function displayList() {
 }
 
 displayList();
+
+
+function SwitchDisplay() {
+    if(currTimeShow){
+        displayList();
+        document.getElementById('currentShow').innerText="Show Time";
+        currTimeShow=false;
+    }
+    else{
+        displayListWithTime();
+        document.getElementById('currentShow').innerText="Hide Time";
+        currTimeShow=true;
+    }
+}
+
+function displayListWithTime() {
+    let str=`
+    <tr>
+	    <th>Name</th>
+	    <th>Prices</th>
+	    <th>Quatity</th>
+    </tr>`;
+    if(localStorage.getItem("TrackItData") != null){
+        let masterDb = JSON.parse(localStorage.getItem("TrackItData"));
+        console.log(masterDb);
+        let j=1;
+        while(masterDb.items[j]!=null){
+            j++;
+        }
+
+        for(let k=1; k<j; k++){
+            if(masterDb.items[k].timeNow!=null)
+                str += `<tr> <td colspan="3" style="font-style: italic;">${masterDb.items[k].timeNow}</td> </tr>`;
+            else
+                str += `<tr> <td colspan="3" style="font-style: italic;">-- NA --</td> </tr>`;
+            str += `<tr onclick="handler(this.id)" id="${k}"> <td>${masterDb.items[k].name}</td>
+            <td>${masterDb.items[k].price}</td> <td>${masterDb.items[k].quant}</td></tr>`;
+        }
+        
+        let names = [];
+        let quants = [];
+        let prices = [];
+        j=1, i=0;
+        while(masterDb.items[j]!=null){
+            names[i] = masterDb.items[j].name;
+            quants[i] = masterDb.items[j].quant;
+            prices[i++] = masterDb.items[j].price;
+            j++;
+        }
+        celldata.innerHTML = totalcalc(str, names, quants, prices);
+        resetval();
+    }
+}
 
 function resetval(){
 	document.getElementById("nameOfItem").value="";
@@ -136,6 +220,29 @@ function totalcalc(str, names, quants, prices){
 	str += `<tr> <td style="color: var(--dust-bin);">Total</td> <td style="color: var(--dust-bin);">${total}</td> <td></td> </tr>`;
 
 	return str;
+}
+
+function totalcalcReturn(str, names, quants, prices){
+	let total=0;
+	let j;
+	for(j=0; j<names.length; j++){
+
+        if(prices[j]=="" && quants[j]==""){
+            total+=0;
+        }
+		else if(quants[j]==""){
+			total += parseInt(prices[j]) ;
+		}	
+		else if(prices[j]=="")
+			total += parseInt(quants[j]);
+		
+            
+		else
+		total += quants[j]*prices[j];
+	}
+	
+
+	return total;
 }
 
 function handler(id){
