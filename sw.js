@@ -1,4 +1,3 @@
-/*
 self.addEventListener("install", e => {
     e.waitUntil(
         caches.open("TractIt").then(cache => {
@@ -18,5 +17,3 @@ self.addEventListener("fetch", e => {
     );
   
 });
-
-  */
