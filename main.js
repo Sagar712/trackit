@@ -144,12 +144,14 @@ displayList();
 function SwitchDisplay() {
     if(currTimeShow){
         displayList();
-        document.getElementById('currentShow').innerText="Show Time";
+        document.querySelectorAll('.currentShow')[0].innerText="Show Dates";
+        document.querySelectorAll('.currentShow')[1].innerText="Show Dates";
         currTimeShow=false;
     }
     else{
         displayListWithTime();
-        document.getElementById('currentShow').innerText="Hide Time";
+        document.querySelectorAll('.currentShow')[0].innerText="Hide Dates";
+        document.querySelectorAll('.currentShow')[1].innerText="Hide Dates";
         currTimeShow=true;
     }
 }
@@ -276,6 +278,21 @@ function handler(id){
     
     displayList();
 }
+
+let distanceToTop=0;
+window.addEventListener('scroll', function(ev) {
+
+    var someDiv = document.getElementById('allcell');
+    distanceToTop = someDiv.getBoundingClientRect().top;
+ 
+    console.log(distanceToTop);
+    if(distanceToTop<70)
+        document.querySelector('.optionNav').classList.add('show');
+    else
+        document.querySelector('.optionNav').classList.remove('show');
+ });
+
+
 
 function deleteList() {
     if(confirm("Are you sure you want to delete list?")){

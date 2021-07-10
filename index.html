@@ -25,7 +25,6 @@
     </script>
 </head>
 <body>
-    
     <div class="header">
         <div class="titleName">Track it</div>
         <div class="menus" onclick="toggleMenu()"><i class="fas fa-ellipsis-v"></i></div>
@@ -36,8 +35,8 @@
         <ul>
             <li onclick="location.href='./import-export/import-export.html'"><p>Export | Import</p></li>
             <li onclick="SwitchDisplay()">
-                <p id="currentShow">Show Time</p>
-                <i class="far fa-calendar-alt" style="font-size: 1.3rem; margin-left: 3rem; font-weight: bolder;"></i>
+                <p class="currentShow">Show Dates</p>
+                <i class="far fa-calendar-alt" style="font-size: 1.3rem; margin-left: 2.3rem; font-weight: bolder;"></i>
             </li>
             <li>
                 <p>Night</p>
@@ -62,10 +61,21 @@
             <input type="number" id="quant" placeholder="Quantity">
         </div>
     </div>
+    <div class="optionNav">
+        <div onclick="SwitchDisplay()">
+            <span class="currentShow">Show Dates</span>
+            <i class="far fa-calendar-alt" style="font-size: 1.3rem; margin-left: 0.5rem; font-weight: bolder;"></i>
+        </div>
+        <div onclick="shareList()">
+            Share list
+            <i class="fab fa-whatsapp" style="font-size: 1.3rem; margin-left: 0.5rem; font-weight: bolder;"></i>
+        </div>
+        <div onclick="toggleCirc()">
+            <i style="font-size: 1.3rem;margin: auto 0.3rem; font-weight: bolder;" class="far fa-moon"></i>
+        </div>
+    </div>
 
-    <table id="allcell">
-        
-    </table>
+    <table id="allcell"></table>
 
 
     <script src="./main.js"></script>
