@@ -282,17 +282,15 @@ function handler(id){
 let distanceToTop=0;
 window.addEventListener('scroll', function(ev) {
 
-    var someDiv = document.getElementById('allcell');
+    var someDiv = document.getElementById('nameOfItem');
     distanceToTop = someDiv.getBoundingClientRect().top;
  
-    console.log(distanceToTop);
-    if(distanceToTop<70)
+    //console.log(distanceToTop);
+    if(distanceToTop<30)
         document.querySelector('.optionNav').classList.add('show');
     else
         document.querySelector('.optionNav').classList.remove('show');
  });
-
-
 
 function deleteList() {
     if(confirm("Are you sure you want to delete list?")){

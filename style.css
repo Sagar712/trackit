@@ -213,10 +213,10 @@ body{
     }
     .optionNav{
         visibility: hidden;
-        position: sticky;
+        position: fixed;
         top: 0;
         left: 0;
-        height: 2.5rem;
+        height: 0rem;
         width: 100%;
         background-color: var(--background-color);
         display: flex;
