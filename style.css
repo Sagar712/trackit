@@ -42,6 +42,7 @@ body{
     flex-direction: column;
     align-items: center;
     transition: 1s all ease;
+    overflow-x: hidden;
 }
 
 .toggleme{
@@ -57,7 +58,36 @@ body{
     transition: 0.2s all ease;
 }
 
-
+.desktopMenus{
+    display: flex;
+}
+.desktopMenus ul{
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    list-style: none;
+}
+.desktopMenus li{
+    padding-left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--table-body);
+    height: 2rem;
+    margin: 0.5rem;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    border-radius: 5px;
+    border: 1px solid var(--border-color);
+    width: 7rem;
+    cursor: pointer;
+}
+.desktopMenus li:active{
+    background-color: var(--menuitem-click);
+}
+.optionNav{
+    display: none;
+}
 .circle{
     height: 2rem;
     width: 2rem;
@@ -87,21 +117,117 @@ body{
     color: var(--title-name);
     user-select: none;
 }
+.menuItems{
+    display: none;
+}
 
 .menus{
     width: 3rem;
     height: 2rem;
     font-size: 1.1rem;
-    display: flex;
+    display: none;
     align-items: center;
     justify-content: center;
     color: var(--text-color);
+}
+
+.inpuTools{
+    width: 35vw;
+    display: flex;
+    flex-direction: column;
+}
+input{
+    border: none;
+    border-bottom: 2px solid var(--text-color);
+    outline: none;
+    font-size: 1.2rem;
+    background-color: transparent;
+    color: var(--text-color);
+}
+.row1{
+    display: flex;
+    justify-content: space-evenly;
+}
+.row1:nth-child(2){
+    margin-top: 1rem;
+}
+#nameOfItem{
+    width: 50%;
+    height: 1.7rem;
+}
+#quant{
+    width: 30%;
+    height: 1.7rem;
+}
+
+.butnSet{
+    width: 50%;
+    height: 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+#price{
+    width: 30%;
+    height: 1.7rem;
+}
+.butnSet button{
+    width: 5rem;
+    height: 2rem;
+    font-size: 1rem;
+    font-weight: bold;
+    border: 2px solid var(--border-color);
+    border-radius: 5px;
+    background-color: var(--button-color);
+    color: var(--text-color);
+    user-select: none;
+    cursor: pointer;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+.butnSet button:active{
+    background-color: rgb(175, 175, 175);
+}
+.butnSet button:nth-child(2){
+    color: var(--dust-bin);
+}
+
+table{
+    position: relative;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+    width: 60%;
+    border-collapse: collapse;
+    background-color: var(--table-body);
+    border-radius: 5px;
+    border: 1px solid var(--table-border);
+    overflow: hidden;
+}
+th{
+    background-color: var(--table-header);
+    color: var(--table-header-text);
+    height: 2rem;
+    border-right: var(--table-border);
+}
+tr:active{
+    background-color: rgb(180, 180, 180);
+}
+td{
+    text-align: center;
+    color: var(--text-color);
+    height: 1.7rem;
+    border: 1px solid var(--table-border);
+    cursor: pointer;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+td:nth-child(last){
+    color: var(--dust-bin);
 }
 
 /*-----------------------FOR MEDIA-----------------------*/
 
 @media screen and (max-width:930px)  {
     .header{
+        position: sticky;
         z-index: 900;
     }
     .inpuTools{
@@ -124,6 +250,9 @@ body{
     .row1:nth-child(2){
         margin-top: 1rem;
     }
+    .desktopMenus{
+        display: none;
+    }
     #nameOfItem{
         width: 50%;
         height: 1.7rem;
@@ -131,6 +260,9 @@ body{
     #quant{
         width: 30%;
         height: 1.7rem;
+    }
+    .menus{
+        display: flex;
     }
     .butnSet{
         width: 50%;
@@ -173,6 +305,7 @@ body{
         visibility: hidden;
         z-index: 999;
         transition: 0.5s all ease;
+        display: block;
     }
     .opacitor{
         position: fixed;

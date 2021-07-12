@@ -146,12 +146,14 @@ function SwitchDisplay() {
         displayList();
         document.querySelectorAll('.currentShow')[0].innerText="Show Dates";
         document.querySelectorAll('.currentShow')[1].innerText="Show Dates";
+        document.querySelectorAll('.currentShow')[2].innerText="Show Dates";
         currTimeShow=false;
     }
     else{
         displayListWithTime();
         document.querySelectorAll('.currentShow')[0].innerText="Hide Dates";
         document.querySelectorAll('.currentShow')[1].innerText="Hide Dates";
+        document.querySelectorAll('.currentShow')[2].innerText="Hide Dates";
         currTimeShow=true;
     }
 }
