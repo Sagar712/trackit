@@ -12,6 +12,7 @@
     --table-header-text: rgb(255, 255, 255);
     --table-body: #ECECEC;
     --table-border: #767676;
+    --date-color: #615200;
 }
 
 [data-theme="dark"] {
@@ -28,6 +29,7 @@
     --table-header-text: black;
     --table-body: #5F5F5F;
     --table-border: #AEAEAE;
+    --date-color: #e0ca00;
 }
 
 *{
@@ -212,7 +214,6 @@ tr:active{
     background-color: rgb(180, 180, 180);
 }
 td{
-    text-align: center;
     color: var(--text-color);
     height: 1.7rem;
     border: 1px solid var(--table-border);

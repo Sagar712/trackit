@@ -119,8 +119,8 @@ function displayList() {
         }
 
         for(let k=1; k<j; k++){
-            str += `<tr onclick="handler(this.id)" id="${k}"> <td>${masterDb.items[k].name}</td>
-            <td>${masterDb.items[k].price}</td> <td>${masterDb.items[k].quant}</td></tr>`;
+            str += `<tr onclick="handler(this.id)" id="${k}"> <td style="text-align: left">${masterDb.items[k].name}</td>
+            <td style="text-align: right">${masterDb.items[k].price}</td> <td style="text-align: right">${masterDb.items[k].quant}</td></tr>`;
         }
 
         let names = [];
@@ -175,13 +175,12 @@ function displayListWithTime() {
 
         for(let k=1; k<j; k++){
             if(masterDb.items[k].timeNow!=null)
-                str += `<tr> <td colspan="3" style="font-style: italic;">${masterDb.items[k].timeNow}</td> </tr>`;
+                str += `<tr> <td colspan="3" style="font-style: italic;color:var(--date-color);text-align:center;">${masterDb.items[k].timeNow}</td> </tr>`;
             else
-                str += `<tr> <td colspan="3" style="font-style: italic;">-- NA --</td> </tr>`;
-            str += `<tr onclick="handler(this.id)" id="${k}"> <td>${masterDb.items[k].name}</td>
-            <td>${masterDb.items[k].price}</td> <td>${masterDb.items[k].quant}</td></tr>`;
+                str += `<tr> <td colspan="3" style="font-style: italic;color:var(--date-color);text-align:center;">-- NA --</td> </tr>`;
+            str += `<tr onclick="handler(this.id)" id="${k}"> <td style="text-align: left">${masterDb.items[k].name}</td>
+            <td style="text-align: right">${masterDb.items[k].price}</td> <td style="text-align: right">${masterDb.items[k].quant}</td></tr>`;
         }
-        
         let names = [];
         let quants = [];
         let prices = [];
@@ -221,7 +220,7 @@ function totalcalc(str, names, quants, prices){
 		else
 		total += quants[j]*prices[j];
 	}
-	str += `<tr> <td style="color: var(--dust-bin);">Total</td> <td style="color: var(--dust-bin);">${total}</td> <td></td> </tr>`;
+	str += `<tr> <td style="color: var(--dust-bin);">Total</td> <td style="color: var(--dust-bin);text-align:right;">${total}</td> <td></td> </tr>`;
 
 	return str;
 }
@@ -238,9 +237,7 @@ function totalcalcReturn(str, names, quants, prices){
 			total += parseInt(prices[j]) ;
 		}	
 		else if(prices[j]=="")
-			total += parseInt(quants[j]);
-		
-            
+			total += parseInt(quants[j]);   
 		else
 		total += quants[j]*prices[j];
 	}
