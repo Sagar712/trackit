@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="./Sparrow.png" type="image/x-icon">
+    <title>Track it</title>
+    <link
+      rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v5.15.1/css/all.css"
+      integrity="sha384-vp86vTRFVJgpjF9jiIGPEEqYqlDwgyBgEF109VFjmqGmIY/Y4HV4d3Gp2irVfcrp"
+      crossorigin="anonymous"
+    />
+    <link rel="manifest" href="./manifest.json">
+    <link rel="stylesheet" href="./style.css">
+    <script type="text/javascript">
+        if(localStorage.getItem("DarkModeTrackIt") == null)
+            localStorage.setItem("DarkModeTrackIt", "off");
+        let mode =localStorage.getItem("DarkModeTrackIt");
+        if(mode=="off")
+            document.documentElement.setAttribute("data-theme", "root");
+        else
+            document.documentElement.setAttribute("data-theme", "dark");
+    </script>
+</head>
+<body>
+    <div class="header">
+        <div class="titleName">Edit Expenses</div>
+        <div class="donebtn" onclick="submitChnage()">Done</div>
+    </div>
+    
+
+    <table id="allcell"></table>
+
+
+    <script src="./edit.js"></script>
+</body>
+</html>

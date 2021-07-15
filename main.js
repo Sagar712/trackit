@@ -146,14 +146,12 @@ function SwitchDisplay() {
         displayList();
         document.querySelectorAll('.currentShow')[0].innerText="Show Dates";
         document.querySelectorAll('.currentShow')[1].innerText="Show Dates";
-        document.querySelectorAll('.currentShow')[2].innerText="Show Dates";
         currTimeShow=false;
     }
     else{
         displayListWithTime();
         document.querySelectorAll('.currentShow')[0].innerText="Hide Dates";
         document.querySelectorAll('.currentShow')[1].innerText="Hide Dates";
-        document.querySelectorAll('.currentShow')[2].innerText="Hide Dates";
         currTimeShow=true;
     }
 }
@@ -207,16 +205,15 @@ function totalcalc(str, names, quants, prices){
 	let j;
 	for(j=0; j<names.length; j++){
 
-        if(prices[j]=="" && quants[j]==""){
+        if((prices[j]=="" || isNaN(parseInt(prices[j]))) && (quants[j]=="" || isNaN(parseInt(quants[j])))){
             total+=0;
         }
-		else if(quants[j]==""){
+		else if(quants[j]=="" || isNaN(parseInt(quants[j]))){
 			total += parseInt(prices[j]) ;
 		}	
-		else if(prices[j]=="")
+		else if(prices[j]=="" || isNaN(parseInt(prices[j])))
 			total += parseInt(quants[j]);
-		
-            
+
 		else
 		total += quants[j]*prices[j];
 	}
@@ -274,7 +271,7 @@ function handler(id){
         j++;
     }
     localStorage.setItem("TrackItData", JSON.stringify(copyDb));
-    
+    backupCellPush(masterDb);
     displayList();
 }
 
@@ -296,5 +293,29 @@ function deleteList() {
         localStorage.removeItem('TrackItData');
         celldata.innerHTML ="";
     }
-
 }
+
+let arr = new Array();
+let count = 0;
+function backupCellPush(sampleDb) {
+    if(count<10){
+        arr.push(sampleDb);
+        count++;
+        console.log("Backup stack:");
+        console.log(arr);
+    }
+    printLevels();
+}
+
+function backupCellPop() {
+    if(arr.length>0){
+        localStorage.setItem('TrackItData', JSON.stringify(arr.pop()));
+        count--;
+        displayList();
+    }
+    printLevels();
+}
+function printLevels() {
+    document.getElementById('levelsPresent').innerText=count;
+}
+printLevels();

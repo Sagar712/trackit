@@ -14,6 +14,15 @@
     <link rel="shortcut icon" href="../Sparrow.png" type="image/x-icon">
     <link rel="stylesheet" href="./import-export.css">
     <title>Import-Export</title>
+    <script type="text/javascript">
+        if(localStorage.getItem("DarkModeTrackIt") == null)
+            localStorage.setItem("DarkModeTrackIt", "off");
+        let mode =localStorage.getItem("DarkModeTrackIt");
+        if(mode=="off")
+            document.documentElement.setAttribute("data-theme", "root");
+        else
+            document.documentElement.setAttribute("data-theme", "dark");
+    </script>
 </head>
 <body>
     <div class="backbtnar">
@@ -24,7 +33,7 @@
         <div class="box">
             <p>
                 Export all encryted text to your device which you can later revoke here by importing.
-                File will be stored in downloads folder with name <span style="color: rgb(255, 196, 0);">List-Data.json</span> 
+                File will be stored in downloads folder with name <span style="color: var(--border);">List-Data.json</span> 
             </p>
             <div class="butn">
                 <button onclick="exportFile()">
@@ -35,7 +44,7 @@
         <div class="box">
             <p>
                 All imported items will be added on home page. 
-                You need to choose valid <span style="color: rgb(255, 196, 0);">List-Data.json</span>
+                You need to choose valid <span style="color: var(--border);">List-Data.json</span>
                 to import items successfully.
             </p>
             <div class="butn">

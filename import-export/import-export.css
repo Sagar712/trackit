@@ -1,3 +1,16 @@
+:root{
+    --background-color:#fff;
+    --text:rgb(0, 0, 0);
+    --border:rgb(187, 121, 0);
+    --plain-text:rgb(51, 51, 51);
+}
+
+[data-theme="dark"] {
+    --background-color: #000000;
+    --text:#fff;
+    --border:orange;
+    --plain-text:rgb(194, 194, 194);
+}
 *{
     margin: 0;
     font-family: 'Kumbh Sans', sans-serif;
@@ -6,8 +19,8 @@ body{
     width: 100%;
     overflow-x: hidden;
     min-height: 100%;
-    background-color: rgb(27, 27, 27);
-    color: rgb(221, 221, 221);
+    background-color: var(--background-color);
+    color: var(--plain-text);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -22,7 +35,7 @@ body{
 
 .backBtn{
     margin-right: 8vw;
-    color: white;
+    color: var(--text);
     height: 2rem;
     width: 4.7rem;
     font-size: 1.1rem;
@@ -32,7 +45,7 @@ body{
     font-weight: bold;
     border-radius: 10px;
     cursor: pointer;
-    border: 2px solid white;
+    border: 2px solid var(--text);
     user-select: none;
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
@@ -42,7 +55,7 @@ body{
 }
 
 .allboxes{
-    color: rgb(190, 190, 190);
+    color: var(--plain-text);
     display: flex;
     align-items: center;
     width: 100vw;
@@ -51,7 +64,7 @@ body{
 }
 .box{
     flex: 1;
-    border: 2px solid orange;
+    border: 2px solid var(--border);
     border-radius: 15px;
     margin: 3rem;
     height: 70%;
@@ -70,7 +83,7 @@ p{
 .butn button{
     outline: none;
     background-color: inherit;
-    border: black solid 2px ;
+    border: none;
     background-color: rgb(0, 136, 214);
     border-radius: 5px;
     color: rgb(255, 253, 253);
