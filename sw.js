@@ -1,7 +1,7 @@
 self.addEventListener("install", e => {
     e.waitUntil(
         caches.open("TractIt").then(cache => {
-            return cache.addAll(["./", "./main.js", "./style.css", "./Sparrow.png", "",
+            return cache.addAll(["./", "./main.js", "./style.css", "./Sparrow.png", "./editMode.html","./edit.js",
             "./contact-us/contact.html", "./contact-us/otherstyle.css", 
             "./import-export/import-export.css", "./import-export/import-export.html", "./import-export/import-export.js"]);
         })
