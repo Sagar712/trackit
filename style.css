@@ -25,9 +25,9 @@
     --menu-text: #fff;
     --menu-border: #767676;
     --menuitem-click: #7c7c7c;
-    --table-header: #CCCCCC;
+    --table-header: #adadad;
     --table-header-text: black;
-    --table-body: #5F5F5F;
+    --table-body: #424242;
     --table-border: #AEAEAE;
     --date-color: #e0ca00;
 }
@@ -45,6 +45,7 @@ body{
     align-items: center;
     transition: 1s all ease;
     overflow-x: hidden;
+    overscroll-behavior: contain;
 }
 .donebtn{
     width: 5rem;
@@ -126,7 +127,7 @@ body{
     z-index: 0;
 }
 .titleName{
-    font-size: 1.7rem;
+    font-size: 1.45rem;
     font-weight: bold;
     margin-left: 1.3rem;
     color: var(--title-name);

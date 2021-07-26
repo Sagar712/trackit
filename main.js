@@ -18,26 +18,41 @@ if(localStorage.getItem("DarkModeTrackIt") == "on"){
 
 function shareList() {
     let masterDb = JSON.parse(localStorage.getItem("TrackItData"));
-    let tempStr = "Name  |  Price  |  Quantity%0a";
+    const files = new File([localStorage.getItem("TrackItData")], "Track-it.json", {type: "application/json"});
     let j=1;
-    while(masterDb.items[j]!=null){
-        tempStr  = tempStr.concat(`${masterDb.items[j].name}  |  ${masterDb.items[j].price}  |  ${masterDb.items[j].quant}%0a`);
-        j++;
+    if (navigator.canShare && navigator.canShare({ files: files })) {
+        navigator.share({
+            files: files,
+            title: 'Pictures',
+            text: 'Photos from Mexico',
+
+        })
+        .then(() => {
+           console.log("Shared"); 
+        })
+        .catch(console.error);
     }
-    let names = [];
-    let quants = [];
-    let prices = [];
-    j=1, i=0;
-    while(masterDb.items[j]!=null){
-        names[i] = masterDb.items[j].name;
-        quants[i] = masterDb.items[j].quant;
-        prices[i++] = masterDb.items[j].price;
-        j++;
+    else {
+        let tempStr = "Name  |  Price  |  Quantity%0a";
+        while(masterDb.items[j]!=null){
+            tempStr  = tempStr.concat(`${masterDb.items[j].name}  |  ${masterDb.items[j].price}  |  ${masterDb.items[j].quant}%0a`);
+            j++;
+        }
+        let names = [];
+        let quants = [];
+        let prices = [];
+        j=1, i=0;
+        while(masterDb.items[j]!=null){
+            names[i] = masterDb.items[j].name;
+            quants[i] = masterDb.items[j].quant;
+            prices[i++] = masterDb.items[j].price;
+            j++;
+        }
+        tempStr += "-----------------------------------%0a";
+        tempStr = tempStr.concat(`Total : ${totalcalcReturn(tempStr, names, quants, prices)}%0a`);
+        tempStr += "-----------------------------------%0a";
+        location.href = `whatsapp://send?text=${tempStr}`;
     }
-    tempStr += "-----------------------------------%0a";
-    tempStr = tempStr.concat(`Total : ${totalcalcReturn(tempStr, names, quants, prices)}%0a`);
-    tempStr += "-----------------------------------%0a";
-    location.href = `whatsapp://send?text=${tempStr}`;
 }
 
 function toggleCirc() {
