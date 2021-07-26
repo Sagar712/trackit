@@ -20,7 +20,7 @@ function shareList() {
     let masterDb = JSON.parse(localStorage.getItem("TrackItData"));
     const files = new File([localStorage.getItem("TrackItData")], "Track-it.json", {type: "application/json"});
     let j=1;
-    if (navigator.canShare && navigator.canShare({ files: files })) {
+    if (navigator.share) {
         navigator.share({
             files: files,
             title: 'Pictures',
