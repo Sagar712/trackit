@@ -134,7 +134,7 @@ function displayList() {
         }
 
         for(let k=1; k<j; k++){
-            str += `<tr onclick="handler(this.id)" id="${k}"> <td style="text-align: left">${masterDb.items[k].name}</td>
+            str += `<tr id="${k}"> <td style="text-align: left">${masterDb.items[k].name}</td>
             <td style="text-align: right">${masterDb.items[k].price}</td> <td style="text-align: right">${masterDb.items[k].quant}</td></tr>`;
         }
 
@@ -150,6 +150,7 @@ function displayList() {
         }
         celldata.innerHTML = totalcalc(str, names, quants, prices);
         resetval();
+        longpress();
     }
 }
 
@@ -191,7 +192,7 @@ function displayListWithTime() {
                 str += `<tr> <td colspan="3" style="font-style: italic;color:var(--date-color);text-align:center;">${masterDb.items[k].timeNow}</td> </tr>`;
             else
                 str += `<tr> <td colspan="3" style="font-style: italic;color:var(--date-color);text-align:center;">-- NA --</td> </tr>`;
-            str += `<tr onclick="handler(this.id)" id="${k}"> <td style="text-align: left">${masterDb.items[k].name}</td>
+            str += `<tr id="${k}"> <td style="text-align: left">${masterDb.items[k].name}</td>
             <td style="text-align: right">${masterDb.items[k].price}</td> <td style="text-align: right">${masterDb.items[k].quant}</td></tr>`;
         }
         let names = [];
@@ -304,10 +305,31 @@ window.addEventListener('scroll', function(ev) {
  });
 
 function deleteList() {
-    if(confirm("Are you sure you want to delete list?")){
-        localStorage.removeItem('TrackItData');
-        celldata.innerHTML ="";
+    let itr=1;
+    let arr = new Array();
+    document.querySelectorAll('input[type="checkbox"]').forEach(checkbox=>{
+        console.log("row "+(itr++)+" : "+checkbox.checked);
+        arr.push(checkbox.checked);
+    });
+
+    let masterDb = JSON.parse(localStorage.getItem("TrackItData"));
+    let copyDb = {
+        items : {
+            
+        }
     }
+    let j=1, cp = 1;
+    console.log(masterDb);
+    while(masterDb.items[j]!=null){
+        if(!arr[j-1])
+            copyDb.items[cp++] = masterDb.items[j];
+        j++;
+        console.log(arr[j-1]);
+    }
+    console.log(copyDb);
+    localStorage.setItem("TrackItData", JSON.stringify(copyDb));
+    displayList();
+    closeSlect();
 }
 
 let arr = new Array();
@@ -334,3 +356,92 @@ function printLevels() {
     document.getElementById('levelsPresent').innerText=count;
 }
 printLevels();
+
+
+//Handling log presses.
+let isheld = false;
+let activeHold = null;
+function longpress() {
+    if(document.querySelector("td")!=null){
+        document.querySelectorAll('tr').forEach(row => {
+            row.addEventListener('touchstart', ()=> {
+                isheld = true;
+                activeHold = setTimeout(() => {
+                    if(isheld){
+                        render_with_check(row.id);
+                    }
+                }, 1000);
+            });
+    
+            row.addEventListener('touchend', ()=> {
+                isheld = false;
+                clearTimeout(activeHold);
+            });
+        });
+    }
+}
+longpress();
+
+function closeSlect() {
+    document.querySelector('.selectall').classList.remove('show');
+    displayList();
+}
+
+let evenItr = true;
+function selectAllOpt() {
+    if(evenItr){
+        evenItr=false;
+        document.querySelectorAll('input[type="checkbox"]').forEach(checkbox=>{
+            checkbox.checked = true;
+        });
+    }
+    else{
+        evenItr=true;
+        document.querySelectorAll('input[type="checkbox"]').forEach(checkbox=>{
+            checkbox.checked = false;
+        });
+    }
+}
+
+function render_with_check(Id) {
+    document.querySelector('.selectall').classList.add('show');
+    let str=`
+    <tr>
+        <th></th>
+	    <th>Name</th>
+	    <th>Prices</th>
+	    <th>Quatity</th>
+    </tr>`;
+    if(localStorage.getItem("TrackItData") != null){
+        let masterDb = JSON.parse(localStorage.getItem("TrackItData"));
+        let j=1;
+        while(masterDb.items[j]!=null){
+            j++;
+        }
+
+        for(let k=1; k<j; k++){
+            if(k==Id){
+                str += `<tr id="${k}"> <td style='display:flex; align-items:center; justify-content:center;'><input type='checkbox' checked class='checkbx'></td> 
+                <td style="text-align: left">${masterDb.items[k].name}</td>
+                <td style="text-align: right">${masterDb.items[k].price}</td> <td style="text-align: right">${masterDb.items[k].quant}</td></tr>`;
+            }
+            else{
+                str += `<tr id="${k}"> <td style='display:flex; align-items:center; justify-content:center;'><input type='checkbox' class='checkbx'></td> 
+                <td style="text-align: left">${masterDb.items[k].name}</td>
+                <td style="text-align: right">${masterDb.items[k].price}</td> <td style="text-align: right">${masterDb.items[k].quant}</td></tr>`;
+            }
+        }
+        let names = [];
+        let quants = [];
+        let prices = [];
+        j=1, i=0;
+        while(masterDb.items[j]!=null){
+            names[i] = masterDb.items[j].name;
+            quants[i] = masterDb.items[j].quant;
+            prices[i++] = masterDb.items[j].price;
+            j++;
+        }
+        celldata.innerHTML = totalcalc(str, names, quants, prices);
+        resetval();
+    }
+}

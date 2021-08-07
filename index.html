@@ -84,19 +84,24 @@
             Share
             <i class="fab fa-whatsapp" style="font-size: 1.3rem; margin-left: 0.5rem; font-weight: bolder;"></i>
         </div>
-        <div onclick="backupCellPop()">
-            <i style="font-size: 1.3rem;margin: auto 0.3rem; font-weight: bolder;" class="fas fa-undo-alt"></i>
-        </div>
         <div onclick="location.href='./editMode.html'">
             <i style="font-size: 1.3rem;margin: auto 0.3rem; font-weight: bolder;" class="fas fa-pencil-alt"></i>
         </div>
         <div onclick="toggleCirc()">
             <i style="font-size: 1.3rem;margin: auto 0.3rem; font-weight: bolder;" class="far fa-moon"></i>
         </div>
+        <div onclick="deleteList()">
+            <i style="font-size: 1.3rem;margin: auto 0.3rem; font-weight: bolder; color: rgb(219, 48, 48);" class="fas fa-trash-alt"></i>
+        </div>
     </div>
-
     <table id="allcell"></table>
-
+    <div class="selectall">
+        <div class="ksfslk">
+            <p style="font-size: 1.2rem;margin-right: 1rem; color: white;">Select all</p> 
+            <input type="checkbox" style="height: 1.3rem; width: 1.3rem;" onchange="selectAllOpt()">
+        </div>
+        <div class="closbtn" onclick="closeSlect()">&times;</div>
+    </div>
 
     <script src="./main.js"></script>
 </body>
