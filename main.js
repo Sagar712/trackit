@@ -423,10 +423,10 @@ function render_with_check(Id) {
     document.querySelector('.selectall').classList.add('show');
     let str=`
     <tr>
-        <th></th>
 	    <th>Name</th>
 	    <th>Prices</th>
 	    <th>Quatity</th>
+        <th></th>
     </tr>`;
     if(localStorage.getItem("TrackItData") != null){
         let masterDb = JSON.parse(localStorage.getItem("TrackItData"));
@@ -437,14 +437,16 @@ function render_with_check(Id) {
 
         for(let k=1; k<j; k++){
             if(k==Id){
-                str += `<tr id="${k}"> <td style='display:flex; align-items:center; justify-content:center;'><input type='checkbox' checked class='checkbx'></td> 
+                str += `<tr id="${k}"> 
                 <td style="text-align: left">${masterDb.items[k].name}</td>
-                <td style="text-align: right">${masterDb.items[k].price}</td> <td style="text-align: right">${masterDb.items[k].quant}</td></tr>`;
+                <td style="text-align: right">${masterDb.items[k].price}</td> <td style="text-align: right">${masterDb.items[k].quant}</td>
+                <td style='display:flex; align-items:center; justify-content:center;'><input type='checkbox' checked class='checkbx'></td> </tr>`;
             }
             else{
-                str += `<tr id="${k}"> <td style='display:flex; align-items:center; justify-content:center;'><input type='checkbox' class='checkbx'></td> 
+                str += `<tr id="${k}">
                 <td style="text-align: left">${masterDb.items[k].name}</td>
-                <td style="text-align: right">${masterDb.items[k].price}</td> <td style="text-align: right">${masterDb.items[k].quant}</td></tr>`;
+                <td style="text-align: right">${masterDb.items[k].price}</td> <td style="text-align: right">${masterDb.items[k].quant}</td>
+                <td style='display:flex; align-items:center; justify-content:center;'><input type='checkbox' class='checkbx'></td> </tr>`;
             }
         }
         let names = [];
