@@ -361,18 +361,21 @@ printLevels();
 //Handling log presses.
 let isheld = false;
 let activeHold = null;
+let transition_touch = 0;
 function longpress() {
     if(document.querySelector("td")!=null){
         document.querySelectorAll('tr').forEach(row => {
-            row.addEventListener('touchstart', ()=> {
+            row.addEventListener('touchstart', (event)=> {
                 isheld = true;
+                transition_touch = getPositionX(event);
+                console.log(transition_touch);
                 activeHold = setTimeout(() => {
                     if(isheld){
                         render_with_check(row.id);
                     }
                 }, 1000);
             });
-    
+            row.addEventListener('touchmove', touchMove);
             row.addEventListener('touchend', ()=> {
                 isheld = false;
                 clearTimeout(activeHold);
@@ -384,7 +387,19 @@ longpress();
 
 function closeSlect() {
     document.querySelector('.selectall').classList.remove('show');
+    evenItr=true;
+    document.querySelectorAll('input[type="checkbox"]').forEach(checkbox=>{
+        checkbox.checked = false;
+    });
     displayList();
+}
+
+function touchMove(event) {
+    if(isheld){
+        if((getPositionX(event) - transition_touch) > 2)
+            isheld = false;
+    }
+        console.log(getPositionX(event));
 }
 
 let evenItr = true;
@@ -404,6 +419,7 @@ function selectAllOpt() {
 }
 
 function render_with_check(Id) {
+    transition_touch = 0;
     document.querySelector('.selectall').classList.add('show');
     let str=`
     <tr>
@@ -444,4 +460,8 @@ function render_with_check(Id) {
         celldata.innerHTML = totalcalc(str, names, quants, prices);
         resetval();
     }
+}
+
+function getPositionX(event) {
+    return event.touches[0].clientX
 }
