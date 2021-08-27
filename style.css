@@ -13,6 +13,7 @@
     --table-body: #ECECEC;
     --table-border: #767676;
     --date-color: #615200;
+    --selection-back: rgb(228, 190, 190);
 }
 
 [data-theme="dark"] {
@@ -30,6 +31,7 @@
     --table-body: #424242;
     --table-border: #AEAEAE;
     --date-color: #e0ca00;
+    --selection-back: rgb(66, 66, 66);
 }
 
 *{
@@ -279,6 +281,20 @@ td{
 td:nth-child(last){
     color: var(--dust-bin);
 }
+.opacitor2, .opacitor3{
+    position: fixed;
+    height: 100vh;
+    width: 100vw;
+    background-color: rgba(0, 0, 0, 0.445);
+    z-index: 990;
+    display: none;
+}
+.opacitor2.active{
+    display: block;
+}
+.opacitor3.active{
+    display: block;
+}
 
 /*-----------------------FOR MEDIA-----------------------*/
 
@@ -286,6 +302,136 @@ td:nth-child(last){
     .header{
         position: sticky;
         z-index: 900;
+    }
+    .selection{
+        height: 1.7rem;
+        width: 6.9rem;
+        background-color: var(--selection-back);
+        color: var(--text-color);
+        border-radius: 5px;
+        font-size: 1.1rem;
+        position: relative;
+        display: flex;
+        align-items: center;
+        margin-left: 1rem;
+        user-select: none;
+    }
+    .selection:active{
+        background-color: grey;
+    }
+    .file-Name{
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+        max-width: 6rem;
+        margin-left: 0.2rem;
+    }
+    .nameOfFile{
+        height: 100%;
+        max-width: calc(100% - 3.2rem);
+        display: flex;
+        align-items: center;
+        flex: 1;
+    }
+    .delIcon{
+        height: 100%;
+        width: 3rem;
+        border-left:2px solid rgb(126, 126, 126);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 1.5rem;
+        color: red;
+        cursor: pointer;
+    }
+    .saveAs{
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+        align-items: center;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%) scale(0);
+        height: 10rem;
+        width: 17rem;
+        background-color: var(--background-color);
+        border: 2px solid var(--table-border);
+        color: var(--text-color);
+        border-radius: 15px;
+        transition: 0.3s all ease;
+        z-index: 9999;
+    }
+    .saveAs input{
+        height: 1.7rem;
+        width: 13rem;
+        background-color: var(--background-color);
+        border: 2px solid var(--table-border);
+        border-radius: 5px;
+        font-size: 1.2rem;
+        color: var(--text-color);
+        outline: none;
+    }
+    .saveAs div{
+        height: 2rem;
+        width: 4rem;
+        background-color: var(--table-body);
+        border-radius: 5px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 1.2rem;
+        font-weight: bold;
+        border: 2px solid var(--table-border);
+        color: var(--text-color);
+    }
+    .saveAs div:active{
+        background-color: var(--menu-item-active);
+    }
+    .saveAs.show{
+        transform: translate(-50%, -50%) scale(1);
+    }
+    .chooseFiles{
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%) scale(0);
+        height: 25rem;
+        width: 20rem;
+        background-color: var(--background-color);
+        border: 2px solid var(--table-border);
+        color: var(--text-color);
+        border-radius: 15px;
+        overflow-y: scroll;
+        transition: 0.3s all ease;
+        z-index: 9999;
+    }
+    .chooseFiles ul{
+        list-style: none;
+        padding-left: 0;
+    }
+    .chooseFiles li{
+        height: 3rem;
+        width: 100%;
+        border-bottom: 2px solid var(--table-border);
+        text-overflow: ellipsis;
+        font-weight: bold;
+        display: flex;
+        cursor: pointer;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .chooseFiles p{
+        white-space: nowrap;
+        overflow-x: hidden;
+        text-overflow: ellipsis;
+        flex: 1;
+        margin-left: 1rem;
+        -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    }
+    .chooseFiles.show{
+        transform: translate(-50%, -50%) scale(1);
+        transition: 0.2s all ease;
     }
     .inpuTools{
         width: 100vw;

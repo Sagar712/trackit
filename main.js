@@ -16,43 +16,9 @@ if(localStorage.getItem("DarkModeTrackIt") == "on"){
     dark=0;
 }
 
-function shareList() {
-    let masterDb = JSON.parse(localStorage.getItem("TrackItData"));
-    const files = new File([localStorage.getItem("TrackItData")], "Track-it.json", {type: "application/json"});
-    let j=1;
-    if (navigator.share) {
-        navigator.share({
-            files: files,
-            title: 'Pictures',
-            text: 'Photos from Mexico',
-
-        })
-        .then(() => {
-           console.log("Shared"); 
-        })
-        .catch(console.error);
-    }
-    else {
-        let tempStr = "Name  |  Price  |  Quantity%0a";
-        while(masterDb.items[j]!=null){
-            tempStr  = tempStr.concat(`${masterDb.items[j].name}  |  ${masterDb.items[j].price}  |  ${masterDb.items[j].quant}%0a`);
-            j++;
-        }
-        let names = [];
-        let quants = [];
-        let prices = [];
-        j=1, i=0;
-        while(masterDb.items[j]!=null){
-            names[i] = masterDb.items[j].name;
-            quants[i] = masterDb.items[j].quant;
-            prices[i++] = masterDb.items[j].price;
-            j++;
-        }
-        tempStr += "-----------------------------------%0a";
-        tempStr = tempStr.concat(`Total : ${totalcalcReturn(tempStr, names, quants, prices)}%0a`);
-        tempStr += "-----------------------------------%0a";
-        location.href = `whatsapp://send?text=${tempStr}`;
-    }
+function popupfiles() {
+    document.querySelector('.chooseFiles').classList.toggle('show');
+    document.querySelector('.opacitor2').classList.toggle('active');
 }
 
 function toggleCirc() {
@@ -87,65 +53,108 @@ function addval(){
                       "May","Jun","Jul","Aug",
                       "Sep", "Oct","Nov","Dec"];
     let day = new Date();
-    if(localStorage.getItem("TrackItData") == null){
-        const masterdb = {
-            items : {
-                
-            }
-        }
-        localStorage.setItem("TrackItData", JSON.stringify(masterdb));
-    }
     
-    let masterDb = JSON.parse(localStorage.getItem("TrackItData"));
+    
+    let masterDb = getItem();
     let j =1;
     let i=0;
     
     
-    while(masterDb.items[j]!=null){
+    while(masterDb[j]!=null){
         j++;
     }
 
-    masterDb.items[j] = {
+    masterDb[j] = {
         name:name,
         quant:quant,
         price:price,
         timeNow:`${day.getDate()} ${monthNames[day.getMonth()]} ${day.getFullYear()}`
     }
-    console.log(masterDb)
-    localStorage.setItem("TrackItData", JSON.stringify(masterDb));
+    console.log(masterDb);
+    setItem(masterDb);
     if(currTimeShow)
         SwitchDisplay();
     else
         displayList();
 }
 
+async function CreateFile() {
+    toggleMenu();
+    const file_name = document.querySelector('.fileName').value;
+    let obj = JSON.parse(localStorage.getItem('AllTrackItData'));
+    let indx=1;
+    while (obj[indx]!=null) {
+        indx++;
+    }
+    obj[indx] = {
+        title:file_name,
+        data:{}
+    }
+    localStorage.setItem('AllTrackItData', JSON.stringify(obj));
+    setIndex(indx);
+    displayList();
+    console.log(obj);
+    popSaveAs();
+}
+
 function displayList() {
+    if(localStorage.getItem('AllTrackItData') == null){
+        let obj = {
+            current_index:0,
+            0:{
+                title:"default",
+                data:{}
+            }
+        }
+        localStorage.setItem('AllTrackItData', JSON.stringify(obj));
+    }
+    document.querySelector('.file-Name').innerText = getItemName();
+
+    // handles showing files to be choose
+    let files="";
+    let obj = JSON.parse(localStorage.getItem('AllTrackItData'));
+    let i=0;
+    while (obj[i]!=null) {
+        if(i==0){
+            files += `<li> 
+            <div class="nameOfFile" onclick="openFile(${i})"><p>${obj[i].title}</p></div></li>`;
+        }
+        else{
+            files += `<li> 
+            <div class="nameOfFile" onclick="openFile(${i})"><p>${obj[i].title}</p></div>
+            <div class="delIcon" onclick="deleteItem(${i})"> <i class="fas fa-trash-alt"></i> </div>
+            </li>`;
+        }
+        i++;
+    }
+    document.querySelector('.allFiles').innerHTML = files;
+    // handles showing table content
     let str=`
     <tr>
 	    <th>Name</th>
 	    <th>Prices</th>
 	    <th>Quatity</th>
     </tr>`;
-    if(localStorage.getItem("TrackItData") != null){
-        let masterDb = JSON.parse(localStorage.getItem("TrackItData"));
+    if(getItem() != null){
+        let masterDb = getItem();
         let j=1;
-        while(masterDb.items[j]!=null){
+        while(masterDb[j]!=null){
             j++;
         }
 
         for(let k=1; k<j; k++){
-            str += `<tr id="${k}"> <td style="text-align: left">${masterDb.items[k].name}</td>
-            <td style="text-align: right">${masterDb.items[k].price}</td> <td style="text-align: right">${masterDb.items[k].quant}</td></tr>`;
+            str += `<tr id="${k}"> <td style="text-align: left">${masterDb[k].name}</td>
+            <td style="text-align: right">${masterDb[k].price}</td> <td style="text-align: right">${masterDb[k].quant}</td></tr>`;
         }
 
         let names = [];
         let quants = [];
         let prices = [];
         j=1, i=0;
-        while(masterDb.items[j]!=null){
-            names[i] = masterDb.items[j].name;
-            quants[i] = masterDb.items[j].quant;
-            prices[i++] = masterDb.items[j].price;
+        while(masterDb[j]!=null){
+            names[i] = masterDb[j].name;
+            quants[i] = masterDb[j].quant;
+            prices[i++] = masterDb[j].price;
             j++;
         }
         celldata.innerHTML = totalcalc(str, names, quants, prices);
@@ -156,6 +165,43 @@ function displayList() {
 
 displayList();
 
+function setIndex(id) {
+    let obj = JSON.parse(localStorage.getItem('AllTrackItData'));
+    obj.current_index = id;
+    localStorage.setItem('AllTrackItData', JSON.stringify(obj));
+}
+function getItem() {
+    let obj = JSON.parse(localStorage.getItem('AllTrackItData'));
+    return obj[obj.current_index].data;
+}
+function getItemName() {
+    let obj = JSON.parse(localStorage.getItem('AllTrackItData'));
+    return obj[obj.current_index].title;
+}
+function setItem(Data) {
+    let obj = JSON.parse(localStorage.getItem('AllTrackItData'));
+    obj[obj.current_index].data = Data;
+    console.log(obj);
+    localStorage.setItem('AllTrackItData', JSON.stringify(obj));
+}
+async function openFile(index){
+    await setIndex(index);
+    popupfiles();
+    displayList();
+}
+async function deleteItem(index){
+    let obj = JSON.parse(localStorage.getItem('AllTrackItData'));
+    let copy_of_obj = {};
+    let idx = 0, count=0;;
+    while (obj[idx] != null) {
+        if(index!=idx)
+        copy_of_obj[count++] = obj[idx];
+        idx++;
+    } 
+    localStorage.setItem('AllTrackItData', JSON.stringify(copy_of_obj));
+    setIndex(0);
+    displayList();
+}
 
 function SwitchDisplay() {
     if(currTimeShow){
@@ -179,30 +225,30 @@ function displayListWithTime() {
 	    <th>Prices</th>
 	    <th>Quatity</th>
     </tr>`;
-    if(localStorage.getItem("TrackItData") != null){
-        let masterDb = JSON.parse(localStorage.getItem("TrackItData"));
+    if(getItem() != null){
+        let masterDb = getItem();
         console.log(masterDb);
         let j=1;
-        while(masterDb.items[j]!=null){
+        while(masterDb[j]!=null){
             j++;
         }
 
         for(let k=1; k<j; k++){
-            if(masterDb.items[k].timeNow!=null)
-                str += `<tr> <td colspan="3" style="font-style: italic;color:var(--date-color);text-align:center;">${masterDb.items[k].timeNow}</td> </tr>`;
+            if(masterDb[k].timeNow!=null)
+                str += `<tr> <td colspan="3" style="font-style: italic;color:var(--date-color);text-align:center;">${masterDb[k].timeNow}</td> </tr>`;
             else
                 str += `<tr> <td colspan="3" style="font-style: italic;color:var(--date-color);text-align:center;">-- NA --</td> </tr>`;
-            str += `<tr id="${k}"> <td style="text-align: left">${masterDb.items[k].name}</td>
-            <td style="text-align: right">${masterDb.items[k].price}</td> <td style="text-align: right">${masterDb.items[k].quant}</td></tr>`;
+            str += `<tr id="${k}"> <td style="text-align: left">${masterDb[k].name}</td>
+            <td style="text-align: right">${masterDb[k].price}</td> <td style="text-align: right">${masterDb[k].quant}</td></tr>`;
         }
         let names = [];
         let quants = [];
         let prices = [];
         j=1, i=0;
-        while(masterDb.items[j]!=null){
-            names[i] = masterDb.items[j].name;
-            quants[i] = masterDb.items[j].quant;
-            prices[i++] = masterDb.items[j].price;
+        while(masterDb[j]!=null){
+            names[i] = masterDb[j].name;
+            quants[i] = masterDb[j].quant;
+            prices[i++] = masterDb[j].price;
             j++;
         }
         celldata.innerHTML = totalcalc(str, names, quants, prices);
@@ -261,7 +307,7 @@ function totalcalcReturn(str, names, quants, prices){
 
 function handler(id){
 	
-    let masterDb = JSON.parse(localStorage.getItem("TrackItData"));
+    let masterDb = JSON.parse(localStorage.getItem("AllTrackItData"));
     let j =1;
     let i=0;
     let cp = 1;
@@ -286,7 +332,7 @@ function handler(id){
         copyDb.items[cp++] = masterDb.items[j];
         j++;
     }
-    localStorage.setItem("TrackItData", JSON.stringify(copyDb));
+    localStorage.setItem("AllTrackItData", JSON.stringify(copyDb));
     backupCellPush(masterDb);
     displayList();
 }
@@ -312,22 +358,18 @@ function deleteList() {
         arr.push(checkbox.checked);
     });
 
-    let masterDb = JSON.parse(localStorage.getItem("TrackItData"));
-    let copyDb = {
-        items : {
-            
-        }
-    }
+    let masterDb = getItem();
+    let copyDb = {}
     let j=1, cp = 1;
     console.log(masterDb);
-    while(masterDb.items[j]!=null){
+    while(masterDb[j]!=null){
         if(!arr[j-1])
-            copyDb.items[cp++] = masterDb.items[j];
+            copyDb[cp++] = masterDb[j];
         j++;
         console.log(arr[j-1]);
     }
-    console.log(copyDb);
-    localStorage.setItem("TrackItData", JSON.stringify(copyDb));
+
+    setItem(copyDb);
     displayList();
     closeSlect();
 }
@@ -344,21 +386,13 @@ function backupCellPush(sampleDb) {
     printLevels();
 }
 
-function backupCellPop() {
-    if(arr.length>0){
-        localStorage.setItem('TrackItData', JSON.stringify(arr.pop()));
-        count--;
-        displayList();
-    }
-    printLevels();
+function popSaveAs() {
+    document.querySelector('.saveAs').classList.toggle('show');
+    document.querySelector('.opacitor3').classList.toggle('active');
 }
-function printLevels() {
-    document.getElementById('levelsPresent').innerText=count;
-}
-printLevels();
 
 
-//Handling log presses.
+//Handling long presses.
 let isheld = false;
 let activeHold = null;
 let transition_touch = 0;
@@ -428,24 +462,24 @@ function render_with_check(Id) {
 	    <th>Quatity</th>
         <th></th>
     </tr>`;
-    if(localStorage.getItem("TrackItData") != null){
-        let masterDb = JSON.parse(localStorage.getItem("TrackItData"));
+    if(localStorage.getItem("AllTrackItData") != null){
+        let masterDb = getItem();
         let j=1;
-        while(masterDb.items[j]!=null){
+        while(masterDb[j]!=null){
             j++;
         }
 
         for(let k=1; k<j; k++){
             if(k==Id){
                 str += `<tr id="${k}"> 
-                <td style="text-align: left">${masterDb.items[k].name}</td>
-                <td style="text-align: right">${masterDb.items[k].price}</td> <td style="text-align: right">${masterDb.items[k].quant}</td>
+                <td style="text-align: left">${masterDb[k].name}</td>
+                <td style="text-align: right">${masterDb[k].price}</td> <td style="text-align: right">${masterDb[k].quant}</td>
                 <td style='display:flex; align-items:center; justify-content:center;'><input type='checkbox' checked class='checkbx'></td> </tr>`;
             }
             else{
                 str += `<tr id="${k}">
-                <td style="text-align: left">${masterDb.items[k].name}</td>
-                <td style="text-align: right">${masterDb.items[k].price}</td> <td style="text-align: right">${masterDb.items[k].quant}</td>
+                <td style="text-align: left">${masterDb[k].name}</td>
+                <td style="text-align: right">${masterDb[k].price}</td> <td style="text-align: right">${masterDb[k].quant}</td>
                 <td style='display:flex; align-items:center; justify-content:center;'><input type='checkbox' class='checkbx'></td> </tr>`;
             }
         }
@@ -453,10 +487,10 @@ function render_with_check(Id) {
         let quants = [];
         let prices = [];
         j=1, i=0;
-        while(masterDb.items[j]!=null){
-            names[i] = masterDb.items[j].name;
-            quants[i] = masterDb.items[j].quant;
-            prices[i++] = masterDb.items[j].price;
+        while(masterDb[j]!=null){
+            names[i] = masterDb[j].name;
+            quants[i] = masterDb[j].quant;
+            prices[i++] = masterDb[j].price;
             j++;
         }
         celldata.innerHTML = totalcalc(str, names, quants, prices);

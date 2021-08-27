@@ -11,8 +11,8 @@ inputDial.addEventListener('change', function(e){
         try{
             const allData = JSON.parse(reader.result);
             console.log(allData);
-            if(allData.items != null){
-                DataAppend( allData.items);
+            if(allData != null){
+                DataAppend( allData);
                 alert("import successful");
             }
             else{
@@ -30,49 +30,28 @@ inputDial.addEventListener('change', function(e){
 });
 
 function DataAppend(items) {
-    let downloadedOriginal = {
-        items : {
-                    
-        }
-    }
     
-    downloadedOriginal.items = items;
-    
-        if(localStorage.getItem("TrackItData")==null){
-            const masterdb = {
-                items : {
-                    
-                }
+    if(localStorage.getItem("AllTrackItData")==null){
+        let obj = {
+            current_index:0,
+            0:{
+                title:"default",
+                data:{}
             }
-    
-            let db = JSON.stringify(masterdb);
-            localStorage.setItem("TrackItData", db);
         }
-        let originalDb = JSON.parse(localStorage.getItem("TrackItData"));
-        console.log(originalDb);
-        let j=1;
-        while(originalDb.items[j]!=null){
-            j++;
-        }
-        
-        let i=1;
-        while(downloadedOriginal.items[i]!=null){
-            originalDb.items[j++] = downloadedOriginal.items[i];
-            i++;    
-        }
-        
-        localStorage.setItem("TrackItData", JSON.stringify(originalDb));
+        localStorage.setItem('AllTrackItData', JSON.stringify(obj));
+    }
+    items.current_index=0;
+    localStorage.setItem("AllTrackItData", JSON.stringify(items));
 }
 
 function exportFile() {
     let masterDb = {
-        items:{
-
-        }
+        
     };
-    let listDb = JSON.parse(localStorage.getItem("TrackItData"));
+    let listDb = JSON.parse(localStorage.getItem("AllTrackItData"));
     if(listDb != null)
-        masterDb.items = listDb.items;
+        masterDb = listDb;
     console.log(masterDb);
     download(JSON.stringify(masterDb), "List-Track-Data.json", "text/plain");
 }

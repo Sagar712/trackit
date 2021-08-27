@@ -23,8 +23,18 @@
     </script>
 </head>
 <body>
+    <div class="opacitor2" onclick="popupfiles()"></div>
+    <div class="opacitor3" onclick="popSaveAs()"></div>
     <div class="header">
         <div class="titleName">Track Expenses</div>
+
+        <div class="selection" onclick="popupfiles()">
+            <p class="file-Name">
+                --ERROR--
+            </p>
+            <i class="fas fa-caret-down" style="position: absolute; right: 0.3rem;"></i>
+        </div>
+        
         <div class="desktopMenus">
             <ul>
                 <li onclick="location.href='./import-export/import-export.html'"><p>Export-Import</p></li>
@@ -56,10 +66,13 @@
                     <div class="circle"></div>
                 </div>
             </li>
-            <li onclick="shareList()"><p>Share list</p> <i class="fab fa-whatsapp" style="font-size: 1.3rem; margin-left: 3.3rem; font-weight: bolder;"></i></li>
-            <li onclick="location.href='./editMode.html'"><p>Edit Mode</p> <i class="fas fa-pencil-alt" style="font-size: 1.3rem; margin-left: 2.8rem; font-weight: bolder;"></i></li>
-            <li onclick="backupCellPop()"><p>Undo</p> <span id="levelsPresent" style="color: red;margin-left: 5rem;"></span></li>
+            
+            <li onclick="location.href='./editMode.html'"><p>Edit File</p> <i class="fas fa-pencil-alt" style="font-size: 1.3rem; margin-left: 4rem; font-weight: bolder;"></i></li>
+            <li onclick="popSaveAs()"><p>Create File</p></li>
+            <!--<li onclick="shareList()"><p>Share list</p> <i class="fab fa-whatsapp" style="font-size: 1.3rem; margin-left: 3.3rem; font-weight: bolder;"></i></li>
             <li onclick="location.href='./contact-us/contact.html'"><p>Contact</p> <i class="far fa-address-card" style="font-size: 1.3rem; margin-left: 3.7rem; font-weight: bolder;"></i></li>
+            <li onclick="backupCellPop()"><p>Undo</p> <span id="levelsPresent" style="color: red;margin-left: 5rem;"></span></li>
+        -->
         </ul>
     </div>
     <div class="inpuTools">
@@ -93,6 +106,16 @@
         <div onclick="deleteList()">
             <i style="font-size: 1.3rem;margin: auto 0.3rem; font-weight: bolder; color: rgb(219, 48, 48);" class="fas fa-trash-alt"></i>
         </div>
+    </div>
+    <div class="chooseFiles">
+        <ul class="allFiles">
+            <li>Option1</li>
+            <li>Option 2</li>
+        </ul>
+    </div>
+    <div class="saveAs">
+        <input type="text" placeholder="Enter filename.." class="fileName">
+        <div onclick="CreateFile()">Save</div>
     </div>
     <table id="allcell"></table>
     <div class="selectall">
