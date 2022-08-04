@@ -1,32 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
     <link rel="shortcut icon" href="./Sparrow.png" type="image/x-icon">
     <title>Track it</title>
-    <link
-      rel="stylesheet"
-      href="https://use.fontawesome.com/releases/v5.15.1/css/all.css"
-      integrity="sha384-vp86vTRFVJgpjF9jiIGPEEqYqlDwgyBgEF109VFjmqGmIY/Y4HV4d3Gp2irVfcrp"
-      crossorigin="anonymous"
-    />
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.1/css/all.css"
+        integrity="sha384-vp86vTRFVJgpjF9jiIGPEEqYqlDwgyBgEF109VFjmqGmIY/Y4HV4d3Gp2irVfcrp" crossorigin="anonymous" />
     <link rel="manifest" href="./manifest.json">
     <link rel="stylesheet" href="./style.css">
     <script type="text/javascript">
-        let mode =localStorage.getItem("DarkModeTrackIt");
-        if(mode=="off")
+        let mode = localStorage.getItem("DarkModeTrackIt");
+        if (mode == "off")
             document.documentElement.setAttribute("data-theme", "root");
         else
             document.documentElement.setAttribute("data-theme", "dark");
     </script>
 </head>
+
 <body>
+    <!-- COMMON OPACITORS AND HEADER -->
     <div class="opacitor2" onclick="popupfiles()"></div>
     <div class="opacitor3" onclick="popSaveAs()"></div>
     <div class="header">
-        <div class="titleName">Track Expenses</div>
+        <div class="titleName">Track It</div>
 
         <div class="selection" onclick="popupfiles()">
             <p class="file-Name">
@@ -34,26 +33,36 @@
             </p>
             <i class="fas fa-caret-down" style="position: absolute; right: 0.3rem;"></i>
         </div>
-        
+
         <div class="desktopMenus">
             <ul>
-                <li onclick="location.href='./import-export/import-export.html'"><p>Export-Import</p></li>
+                <li onclick="location.href='./import-export/import-export.html'">
+                    <p>Export-Import</p>
+                </li>
                 <li onclick="SwitchDisplay()">
                     <p class="currentShow">Show Dates</p>
                 </li>
                 <li onclick="toggleCirc()">
                     <p>Night mode</p>
                 </li>
-                <li onclick="location.href='./contact-us/contact.html'"><p>Contact</p></li>
+                <li onclick="location.href='./editMode.html'">
+                    <p>Edit File</p>
+                </li>
+                <li onclick="popSaveAs()">
+                    <p>Create File</p>
+                </li>
             </ul>
         </div>
         <div class="menus" onclick="toggleMenu()"><i class="fas fa-ellipsis-v"></i></div>
     </div>
 
     <div class="opacitor" onclick="toggleMenu()"></div>
+
+    <!-- ALL MOBILE MENU OPTIONS -->
     <div class="menuItems">
         <ul>
-            <li onclick="location.href='./import-export/import-export.html'"><p>Export | Import</p>
+            <li onclick="location.href='./import-export/import-export.html'">
+                <p>Export | Import</p>
                 <i class="fas fa-file-alt" style="font-size: 1.3rem; margin-left: 1rem; font-weight: bolder;"></i>
             </li>
             <li onclick="SwitchDisplay()">
@@ -66,13 +75,18 @@
                     <div class="circle"></div>
                 </div>
             </li>
-            
-            <li onclick="location.href='./editMode.html'"><p>Edit File</p> <i class="fas fa-pencil-alt" style="font-size: 1.3rem; margin-left: 4rem; font-weight: bolder;"></i></li>
-            <li onclick="popSaveAs()"><p>Create File</p></li>
-            <!--<li onclick="shareList()"><p>Share list</p> <i class="fab fa-whatsapp" style="font-size: 1.3rem; margin-left: 3.3rem; font-weight: bolder;"></i></li>
-            <li onclick="location.href='./contact-us/contact.html'"><p>Contact</p> <i class="far fa-address-card" style="font-size: 1.3rem; margin-left: 3.7rem; font-weight: bolder;"></i></li>
-            <li onclick="backupCellPop()"><p>Undo</p> <span id="levelsPresent" style="color: red;margin-left: 5rem;"></span></li>
-        -->
+
+            <li onclick="location.href='./editMode.html'">
+                <p>Edit File</p> <i class="fas fa-pencil-alt"
+                    style="font-size: 1.3rem; margin-left: 4rem; font-weight: bolder;"></i>
+            </li>
+            <li onclick="shareList()">
+                <p>Share</p> <i class="fab fa-whatsapp"
+                    style="font-size: 1.3rem; margin-left: 5rem; font-weight: bolder;"></i>
+            </li>
+            <li onclick="popSaveAs()">
+                <p>Create File</p>
+            </li>
         </ul>
     </div>
     <div class="inpuTools">
@@ -83,7 +97,7 @@
         <div class="row1">
             <div class="butnSet">
                 <button style="font-size: 1.5rem;" onclick="addval()"> + </button>
-                <button onclick="deleteList()"> <i class="fas fa-trash-alt" ></i> </button>
+                <button onclick="deleteList()"> <i class="fas fa-trash-alt"></i> </button>
             </div>
             <input type="number" id="quant" placeholder="Quantity">
         </div>
@@ -95,6 +109,7 @@
         </div>
         <div onclick="shareList()">
             Share
+
             <i class="fab fa-whatsapp" style="font-size: 1.3rem; margin-left: 0.5rem; font-weight: bolder;"></i>
         </div>
         <div onclick="location.href='./editMode.html'">
@@ -109,8 +124,7 @@
     </div>
     <div class="chooseFiles">
         <ul class="allFiles">
-            <li>Option1</li>
-            <li>Option 2</li>
+            <li>Empty </li>
         </ul>
     </div>
     <div class="saveAs">
@@ -120,7 +134,7 @@
     <table id="allcell"></table>
     <div class="selectall">
         <div class="ksfslk">
-            <p style="font-size: 1.2rem;margin-right: 1rem; color: white;">Select all</p> 
+            <p style="font-size: 1.2rem;margin-right: 1rem; color: white;">Select all</p>
             <input type="checkbox" style="height: 1.3rem; width: 1.3rem;" onchange="selectAllOpt()">
         </div>
         <div class="closbtn" onclick="closeSlect()">&times;</div>
@@ -128,4 +142,5 @@
 
     <script src="./main.js"></script>
 </body>
+
 </html>

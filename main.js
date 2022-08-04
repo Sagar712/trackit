@@ -9,6 +9,9 @@ if("serviceWorker" in navigator){
     })
 }
 
+const DB_NAME = "AllTrackItData"
+const MODE = "DarkModeTrackIt"
+
 let dark=1;
 if(localStorage.getItem("DarkModeTrackIt") == "on"){
     document.querySelector('.circle').classList.add('move');
@@ -43,6 +46,10 @@ function toggleMenu() {
 
 let celldata = document.getElementById("allcell");
 let currTimeShow = false;
+
+function shareList() {
+    window.location.href =  "whatsapp://send?text=https://sagar712.github.io/trackit"
+}
 
 function addval(){
 
@@ -81,7 +88,7 @@ function addval(){
 async function CreateFile() {
     toggleMenu();
     const file_name = document.querySelector('.fileName').value;
-    let obj = JSON.parse(localStorage.getItem('AllTrackItData'));
+    let obj = JSON.parse(localStorage.getItem(DB_NAME));
     let indx=1;
     while (obj[indx]!=null) {
         indx++;
@@ -90,7 +97,7 @@ async function CreateFile() {
         title:file_name,
         data:{}
     }
-    localStorage.setItem('AllTrackItData', JSON.stringify(obj));
+    localStorage.setItem(DB_NAME, JSON.stringify(obj));
     setIndex(indx);
     displayList();
     console.log(obj);
@@ -98,7 +105,7 @@ async function CreateFile() {
 }
 
 function displayList() {
-    if(localStorage.getItem('AllTrackItData') == null){
+    if(localStorage.getItem(DB_NAME) == null){
         let obj = {
             current_index:0,
             0:{
@@ -106,13 +113,13 @@ function displayList() {
                 data:{}
             }
         }
-        localStorage.setItem('AllTrackItData', JSON.stringify(obj));
+        localStorage.setItem(DB_NAME, JSON.stringify(obj));
     }
     document.querySelector('.file-Name').innerText = getItemName();
 
     // handles showing files to be choose
     let files="";
-    let obj = JSON.parse(localStorage.getItem('AllTrackItData'));
+    let obj = JSON.parse(localStorage.getItem(DB_NAME));
     let i=0;
     while (obj[i]!=null) {
         if(i==0){
@@ -165,24 +172,24 @@ function displayList() {
 
 displayList();
 
-function setIndex(id) {
-    let obj = JSON.parse(localStorage.getItem('AllTrackItData'));
+async function setIndex(id) {
+    let obj = JSON.parse(localStorage.getItem(DB_NAME));
     obj.current_index = id;
-    localStorage.setItem('AllTrackItData', JSON.stringify(obj));
+    localStorage.setItem(DB_NAME, JSON.stringify(obj));
 }
 function getItem() {
-    let obj = JSON.parse(localStorage.getItem('AllTrackItData'));
+    let obj = JSON.parse(localStorage.getItem(DB_NAME));
     return obj[obj.current_index].data;
 }
 function getItemName() {
-    let obj = JSON.parse(localStorage.getItem('AllTrackItData'));
+    let obj = JSON.parse(localStorage.getItem(DB_NAME));
     return obj[obj.current_index].title;
 }
 function setItem(Data) {
-    let obj = JSON.parse(localStorage.getItem('AllTrackItData'));
+    let obj = JSON.parse(localStorage.getItem(DB_NAME));
     obj[obj.current_index].data = Data;
     console.log(obj);
-    localStorage.setItem('AllTrackItData', JSON.stringify(obj));
+    localStorage.setItem(DB_NAME, JSON.stringify(obj));
 }
 async function openFile(index){
     await setIndex(index);
@@ -190,7 +197,7 @@ async function openFile(index){
     displayList();
 }
 async function deleteItem(index){
-    let obj = JSON.parse(localStorage.getItem('AllTrackItData'));
+    let obj = JSON.parse(localStorage.getItem(DB_NAME));
     let copy_of_obj = {};
     let idx = 0, count=0;;
     while (obj[idx] != null) {
@@ -198,7 +205,7 @@ async function deleteItem(index){
         copy_of_obj[count++] = obj[idx];
         idx++;
     } 
-    localStorage.setItem('AllTrackItData', JSON.stringify(copy_of_obj));
+    localStorage.setItem(DB_NAME, JSON.stringify(copy_of_obj));
     setIndex(0);
     displayList();
 }
@@ -279,7 +286,10 @@ function totalcalc(str, names, quants, prices){
 		else
 		total += quants[j]*prices[j];
 	}
-	str += `<tr> <td style="color: var(--dust-bin);">Total</td> <td style="color: var(--dust-bin);text-align:right;">${total}</td> <td></td> </tr>`;
+    if(total>0)
+    str += `<tr> <td style="color: var(--green-variant);">Total</td> <td style="color: var(--green-variant);text-align:right;">${total}</td> <td>Will get</td> </tr>`;
+    else
+	str += `<tr> <td style="color: var(--dust-bin);">Total</td> <td style="color: var(--dust-bin);text-align:right;">${total}</td> <td>Will give</td> </tr>`;
 
 	return str;
 }
@@ -389,6 +399,8 @@ function backupCellPush(sampleDb) {
 function popSaveAs() {
     document.querySelector('.saveAs').classList.toggle('show');
     document.querySelector('.opacitor3').classList.toggle('active');
+    document.querySelector('.menuItems').classList.remove('active');
+    document.querySelector('.opacitor').classList.remove('active');
 }
 
 

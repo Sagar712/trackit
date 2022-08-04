@@ -29,7 +29,7 @@ inputDial.addEventListener('change', function(e){
     reader.readAsText(inputDial.files[0]);
 });
 
-function DataAppend(items) {
+async function DataAppend(items) {
     
     if(localStorage.getItem("AllTrackItData")==null){
         let obj = {
@@ -42,7 +42,16 @@ function DataAppend(items) {
         localStorage.setItem('AllTrackItData', JSON.stringify(obj));
     }
     items.current_index=0;
-    localStorage.setItem("AllTrackItData", JSON.stringify(items));
+    let i=0, j=0
+    let masterDb = JSON.parse(localStorage.getItem('AllTrackItData'));
+    while (masterDb[i] != null) {
+        i++
+    }
+    while (items[j] != null) {
+        masterDb[i++] = items[j]
+        j++
+    }
+    localStorage.setItem("AllTrackItData", JSON.stringify(masterDb));
 }
 
 function exportFile() {
