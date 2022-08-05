@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+    <script src="./app2.js" defer></script>
+    <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="../style.css">
+    <title>Fetch it</title>
+    <script type="text/javascript">
+        let mode = localStorage.getItem("DarkModeTrackIt");
+        if (mode == "off")
+            document.documentElement.setAttribute("data-theme", "root");
+        else
+            document.documentElement.setAttribute("data-theme", "dark");
+    </script>
+</head>
+<body>
+    <div class="toastNotify">Loading...</div>
+    <div style="margin-top: 3rem; font-size: 1.2rem;">Make your table public </div>
+    <button onclick="PushishIt()">Publish current page</button>
+    <div style="font-size: 1.2rem;">Shareble link:</div>
+    <button onclick="Share()" class="btnn" disabled>Share on WhatsApp</button>
+</body>
+</html>

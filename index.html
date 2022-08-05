@@ -21,6 +21,7 @@
 </head>
 
 <body>
+    <div class="toastNotify">Loading...</div>
     <!-- COMMON OPACITORS AND HEADER -->
     <div class="opacitor2" onclick="popupfiles()"></div>
     <div class="opacitor3" onclick="popSaveAs()"></div>
@@ -83,6 +84,9 @@
             <li onclick="shareList()">
                 <p>Share</p> <i class="fab fa-whatsapp"
                     style="font-size: 1.3rem; margin-left: 5rem; font-weight: bolder;"></i>
+            </li>
+            <li onclick="republishChanges()" class="republish">
+                <p>Republish</p>
             </li>
             <li onclick="popSaveAs()">
                 <p>Create File</p>

@@ -434,6 +434,48 @@ td:nth-child(last){
     transform: translate(-50%, -50%) scale(1);
 }
 
+.toastNotify{
+    position: fixed;
+    top: -5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    transition: all 1s ease;
+    height: 2.5rem;
+    min-width: 7rem;
+    padding-left: 0.7rem;
+    padding-right: 0.7rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1rem;
+    font-weight: bold;
+    background-color: rgb(175, 255, 206);
+    color: black;
+    border-radius: 5px;
+    z-index: 1000;
+    border: 2px solid rgb(0, 0, 0);
+}
+
+.toastNotify.animate{
+    transition: all 1s ease;
+    top: 0rem;
+}
+
+@keyframes popping {
+    0%{
+        top: -5rem;
+    }
+    10%{
+        top: 0rem;
+    }
+    90%{
+        top: 0rem;
+    }
+    100%{
+        top: -5rem;
+    }
+}
+
 /*-----------------------FOR MEDIA-----------------------*/
 
 @media screen and (max-width:930px)  {
