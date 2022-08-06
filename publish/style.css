@@ -25,6 +25,12 @@
     top: 0rem;
 }
 
+.date{
+    margin-top: 2rem;
+    width: 90vw;
+    font-size: 1rem;
+}
+
 @keyframes popping {
     0%{
         top: -5rem;

@@ -1,11 +1,7 @@
 let params = new URLSearchParams(location.search);
-
 const My_URL = 'https://hishob-app.herokuapp.com/publish/'
-
 let ID = params.get('id');
-
 let celldata = document.getElementById("allcell");
-
 let Toast = document.querySelector('.toastNotify')
 Toast.classList.add('animate')
 
@@ -18,6 +14,8 @@ async function fethingData() {
             let resp = await response.json()
             console.log(resp);
             displayList(resp)
+            if(resp.modifyTime != null)
+                document.querySelector('.timeM').innerText = resp.modifyTime
         }
         else{
             handleToast('rgb(244, 140, 140)', "Invalid Link")
@@ -41,7 +39,7 @@ function displayList(masterDb) {
     <tr>
 	    <th>Name</th>
 	    <th>Prices</th>
-	    <th>Quatity</th>
+	    <th>Quantity</th>
     </tr>`;
     if(masterDb != null){
         let j=1;

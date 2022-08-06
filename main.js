@@ -48,16 +48,18 @@ function toggleMenu() {
 let celldata = document.getElementById("allcell");
 let currTimeShow = false;
 
-console.log(JSON.parse(localStorage.getItem(DB_NAME)));
-function shareList() {
+
+async function shareList() {
     let whatsappData = JSON.parse(localStorage.getItem(DB_NAME))
     if (whatsappData.shared_index == null) {
         whatsappData.shared_index = {}
         localStorage.setItem(DB_NAME, JSON.stringify(whatsappData))
     }
     if (Object.keys(whatsappData.shared_index).includes(`${whatsappData.current_index}`)) {
-        window.location.href = `whatsapp://send?text=${Publish_URL}${whatsappData.shared_index[whatsappData.current_index]}`
-        //window.location.href =  `${Publish_URL}${whatsappData.shared_index[whatsappData.current_index]}`
+        let resp = await fetch(Publish_URL+whatsappData.shared_index[whatsappData.current_index])
+        if(resp.status == 200)
+        //window.location.href = `whatsapp://send?text=${Publish_URL}${whatsappData.shared_index[whatsappData.current_index]}`
+        window.location.href =  `${Publish_URL}${whatsappData.shared_index[whatsappData.current_index]}`
     }
     else {
         if (confirm("This page was never published\n\n Do you want to publish it?")) {
@@ -136,10 +138,14 @@ function displayList() {
     document.querySelector('.file-Name').innerText = getItemName();
     let DATA = JSON.parse(localStorage.getItem(DB_NAME))
     let republish = document.querySelector('.republish')
+    if(DATA.shared_index == null){
+        DATA.shared_index = {}
+        localStorage.setItem(DB_NAME, JSON.stringify(DATA))
+    }
     if (DATA.shared_index && !Object.keys(DATA.shared_index).includes(`${DATA.current_index}`)) {
         republish.style.display = 'none'
     }
-    else if(DATA.shared_index){
+    else if(DATA.shared_index!=null){
         republish.style.display = 'flex'
     }
 
@@ -166,7 +172,7 @@ function displayList() {
     <tr>
 	    <th>Name</th>
 	    <th>Prices</th>
-	    <th>Quatity</th>
+	    <th>Quantity</th>
     </tr>`;
     if (getItem() != null) {
         let masterDb = getItem();
@@ -241,30 +247,31 @@ let Toast = document.querySelector('.toastNotify')
 async function republishChanges() {
     let whatsappData = JSON.parse(localStorage.getItem(DB_NAME))
     handleToast('rgb(175, 255, 206)', 'Loading...', 1)
-    await fetch('https://hishob-app.herokuapp.com/publish/')
-        .then(res1 => {
-            return res1.json()
-        })
-        .then(response => {
-
-            fetch('http://localhost:5501/publish/'+whatsappData.shared_index[whatsappData.current_index], {
-                method: 'POST',
-                headers: {
-                    accept: 'application.json',
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(whatsappData[whatsappData.current_index].data)
-            })
-            .then(res => {
-                return res.json()
-            })
-            .then(resp => {
-
-                handleToast('rgb(175, 255, 206)', 'Success!', 0)
-
-            })
-        })
+    let doesItExist = await fetch('https://hishob-app.herokuapp.com/publish/'+whatsappData.shared_index[whatsappData.current_index])
+    if(doesItExist.status != 200){
+        handleToastForAWhile('red', 'Failure!')
+        delete whatsappData.shared_index[whatsappData.current_index]
+        localStorage.setItem(DB_NAME, JSON.stringify(whatsappData))
+        displayList()
+        return
+    }
+    fetch('https://hishob-app.herokuapp.com/publish/'+whatsappData.shared_index[whatsappData.current_index], {
+        method: 'POST',
+        headers: {
+            accept: 'application.json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(whatsappData[whatsappData.current_index].data)
+    })
+    .then(res => {
+        return res.json()
+    })
+    .then(resp => {
+        handleToast('rgb(175, 255, 206)', 'Success!', 0)
+    })
 }
+
+console.log(JSON.parse(localStorage.getItem(DB_NAME)));
 
 function handleToast(color, msg, status = 1) {
     Toast.innerText = msg
@@ -273,6 +280,24 @@ function handleToast(color, msg, status = 1) {
         Toast.classList.add('animate')
     else
         Toast.classList.remove('animate')
+}
+
+let timout = null
+
+function handleToastForAWhile(color, msg) {
+    Toast.innerText = msg
+    Toast.style.backgroundColor = color
+    Toast.classList.add('animate')
+    timout = setTimeout(() => {
+        Toast.classList.remove('animate')
+    }, 2000)
+}
+
+function clearTime() {
+    if(timout!=null){
+        Toast.classList.remove('animate')
+        clearTimeout(timout)
+    }
 }
 
 function SwitchDisplay() {
@@ -467,7 +492,6 @@ function popSaveAs() {
     document.querySelector('.menuItems').classList.remove('active');
     document.querySelector('.opacitor').classList.remove('active');
 }
-
 
 //Handling long presses.
 let isheld = false;

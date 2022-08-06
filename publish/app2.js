@@ -6,7 +6,9 @@ let Toast = document.querySelector('.toastNotify')
 let sharable = null
 
 function PushishIt() {
-    console.log(Data[Data.current_index].data);
+    let uploadData = Data[Data.current_index].data
+    uploadData.modifyTime = getDateTime()
+    console.log(uploadData);
     handleToast('rgb(175, 255, 206)', 'Publishing...', 1)
     fetch(My_URL,{
         method: 'POST',
@@ -14,7 +16,7 @@ function PushishIt() {
           accept: 'application.json',
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify(Data[Data.current_index].data)
+        body: JSON.stringify(uploadData)
       })
       .then(res => {
         return res.json()
