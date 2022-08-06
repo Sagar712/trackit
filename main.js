@@ -58,8 +58,8 @@ async function shareList() {
     if (Object.keys(whatsappData.shared_index).includes(`${whatsappData.current_index}`)) {
         let resp = await fetch(Publish_URL+whatsappData.shared_index[whatsappData.current_index])
         if(resp.status == 200)
-        //window.location.href = `whatsapp://send?text=${Publish_URL}${whatsappData.shared_index[whatsappData.current_index]}`
-        window.location.href =  `${Publish_URL}${whatsappData.shared_index[whatsappData.current_index]}`
+        window.location.href = `whatsapp://send?text=${Publish_URL}${whatsappData.shared_index[whatsappData.current_index]}`
+        //window.location.href =  `${Publish_URL}${whatsappData.shared_index[whatsappData.current_index]}`
     }
     else {
         if (confirm("This page was never published\n\n Do you want to publish it?")) {
