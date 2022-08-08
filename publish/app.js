@@ -4,7 +4,9 @@ let ID = params.get('id');
 let celldata = document.getElementById("allcell");
 let Toast = document.querySelector('.toastNotify')
 Toast.classList.add('animate')
+const DB_NAME = "AllTrackItData"
 
+let Data = null
 
 async function fethingData() {
     try {
@@ -14,6 +16,7 @@ async function fethingData() {
             let resp = await response.json()
             console.log(resp);
             displayList(resp)
+            Data = resp
             if(resp.modifyTime != null)
                 document.querySelector('.timeM').innerText = resp.modifyTime
         }
@@ -66,6 +69,42 @@ function displayList(masterDb) {
     }
 }
 
+function displayListWithTime(masterDb) {
+    let str = `
+    <tr>
+	    <th>Name</th>
+	    <th>Prices</th>
+	    <th>Quatity</th>
+    </tr>`;
+    if (masterDb != null) {
+        console.log(masterDb);
+        let j = 1;
+        while (masterDb[j] != null) {
+            j++;
+        }
+
+        for (let k = 1; k < j; k++) {
+            if (masterDb[k].timeNow != null)
+                str += `<tr> <td colspan="3" style="font-style: italic;color:var(--date-color);text-align:center;">${masterDb[k].timeNow}</td> </tr>`;
+            else
+                str += `<tr> <td colspan="3" style="font-style: italic;color:var(--date-color);text-align:center;">-- NA --</td> </tr>`;
+            str += `<tr id="${k}"> <td style="text-align: left">${masterDb[k].name}</td>
+            <td style="text-align: right">${masterDb[k].price}</td> <td style="text-align: right">${masterDb[k].quant}</td></tr>`;
+        }
+        let names = [];
+        let quants = [];
+        let prices = [];
+        j = 1, i = 0;
+        while (masterDb[j] != null) {
+            names[i] = masterDb[j].name;
+            quants[i] = masterDb[j].quant;
+            prices[i++] = masterDb[j].price;
+            j++;
+        }
+        celldata.innerHTML = totalcalc(str, names, quants, prices);
+    }
+}
+
 function totalcalc(str, names, quants, prices){
 	let total=0;
 	let j;
@@ -89,4 +128,17 @@ function totalcalc(str, names, quants, prices){
 	str += `<tr> <td style="color: var(--dust-bin);">Total</td> <td style="color: var(--dust-bin);text-align:right;">${total}</td> <td>Will give</td> </tr>`;
 
 	return str;
+}
+let dark = 1;
+function toggleCirc() {
+    document.querySelector('.circle').classList.toggle('move');
+    document.querySelector('.toggleme').classList.toggle('move');
+    if (dark == 1) {
+        displayListWithTime(Data)
+        dark = 0;
+    }
+    else {
+        displayList(Data)
+        dark = 1;
+    }
 }

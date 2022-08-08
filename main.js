@@ -255,6 +255,7 @@ async function republishChanges() {
         displayList()
         return
     }
+    whatsappData.data.modifyTime = getDateTime()
     fetch('https://hishob-app.herokuapp.com/publish/'+whatsappData.shared_index[whatsappData.current_index], {
         method: 'POST',
         headers: {

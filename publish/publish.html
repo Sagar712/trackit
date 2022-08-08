@@ -6,7 +6,6 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
     <script src="./app.js" defer></script>
-    <link rel="stylesheet" href="../style.css">
     <link rel="stylesheet" href="./style.css">
     <title>Fetch it</title>
     <script type="text/javascript">
@@ -20,7 +19,9 @@
 
 <body>
     <div class="toastNotify animate">Loading...</div>
-    <div class="date">Last modified: <span class="timeM" style="color: rgb(255, 220, 175); font-style: italic;">--</span></div>
+    <div class="date">Last modified: <span class="timeM" style="color: var(--last-modified); font-style: italic;">--</span> <br><br> Show Dates:<div class="toggleme" onclick="toggleCirc()">
+        <div class="circle"></div>
+    </div></div>
     <table id="allcell"></table>
 </body>
 
