@@ -42,7 +42,6 @@ function displayList(masterDb) {
     <tr>
 	    <th>Name</th>
 	    <th>Prices</th>
-	    <th>Quantity</th>
     </tr>`;
     if(masterDb != null){
         let j=1;
@@ -52,7 +51,7 @@ function displayList(masterDb) {
 
         for(let k=1; k<j; k++){
             str += `<tr id="${k}"> <td style="text-align: left">${masterDb[k].name}</td>
-            <td style="text-align: right">${masterDb[k].price}</td> <td style="text-align: right">${masterDb[k].quant}</td></tr>`;
+            <td style="text-align: right">${masterDb[k].price}</td> </tr>`;
         }
 
         let names = [];
@@ -74,7 +73,6 @@ function displayListWithTime(masterDb) {
     <tr>
 	    <th>Name</th>
 	    <th>Prices</th>
-	    <th>Quatity</th>
     </tr>`;
     if (masterDb != null) {
         console.log(masterDb);
@@ -85,11 +83,11 @@ function displayListWithTime(masterDb) {
 
         for (let k = 1; k < j; k++) {
             if (masterDb[k].timeNow != null)
-                str += `<tr> <td colspan="3" style="font-style: italic;color:var(--date-color);text-align:center;">${masterDb[k].timeNow}</td> </tr>`;
+                str += `<tr> <td colspan="2" style="font-style: italic;color:var(--date-color);text-align:center;">${masterDb[k].timeNow}</td> </tr>`;
             else
-                str += `<tr> <td colspan="3" style="font-style: italic;color:var(--date-color);text-align:center;">-- NA --</td> </tr>`;
+                str += `<tr> <td colspan="2" style="font-style: italic;color:var(--date-color);text-align:center;">-- NA --</td> </tr>`;
             str += `<tr id="${k}"> <td style="text-align: left">${masterDb[k].name}</td>
-            <td style="text-align: right">${masterDb[k].price}</td> <td style="text-align: right">${masterDb[k].quant}</td></tr>`;
+            <td style="text-align: right">${masterDb[k].price}</td></tr>`;
         }
         let names = [];
         let quants = [];
@@ -123,9 +121,9 @@ function totalcalc(str, names, quants, prices){
 		total += quants[j]*prices[j];
 	}
     if(total>0)
-    str += `<tr> <td style="color: var(--green-variant);">Total</td> <td style="color: var(--green-variant);text-align:right;">${total}</td> <td>Will get</td> </tr>`;
+    str += `<tr> <td style="color: var(--green-variant);">Total</td> <td style="color: var(--green-variant);text-align:right;">${total}</td> </tr>`;
     else
-	str += `<tr> <td style="color: var(--dust-bin);">Total</td> <td style="color: var(--dust-bin);text-align:right;">${total}</td> <td>Will give</td> </tr>`;
+	str += `<tr> <td style="color: var(--dust-bin);">Total</td> <td style="color: var(--dust-bin);text-align:right;">${total}</td> </tr>`;
 
 	return str;
 }

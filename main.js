@@ -13,6 +13,8 @@ const DB_NAME = "AllTrackItData"
 const MODE = "DarkModeTrackIt"
 const Publish_URL = "https://sagar712.github.io/trackit/publish/publish.html?id="
 
+let Toast = document.querySelector('.toastNotify')
+let timout = null
 let dark = 1;
 if (localStorage.getItem("DarkModeTrackIt") == "on") {
     document.querySelector('.circle').classList.add('move');
@@ -71,7 +73,7 @@ async function shareList() {
 function addval() {
 
     let name = document.getElementById("nameOfItem").value;
-    let quant = document.getElementById("quant").value;
+    //let quant = document.getElementById("quant").value;
     let price = document.getElementById("price").value;
 
     let masterDb = getItem();
@@ -85,12 +87,13 @@ function addval() {
 
     masterDb[j] = {
         name: name,
-        quant: quant,
+        quant: null,
         price: price,
         timeNow: getDateTime()
     }
     console.log(masterDb);
     setItem(masterDb);
+    handleToastForAWhile('rgb(175, 255, 206)',"Added !")
     if (currTimeShow)
         SwitchDisplay();
     else
@@ -172,7 +175,6 @@ function displayList() {
     <tr>
 	    <th>Name</th>
 	    <th>Prices</th>
-	    <th>Quantity</th>
     </tr>`;
     if (getItem() != null) {
         let masterDb = getItem();
@@ -183,7 +185,7 @@ function displayList() {
 
         for (let k = 1; k < j; k++) {
             str += `<tr id="${k}"> <td style="text-align: left">${masterDb[k].name}</td>
-            <td style="text-align: right">${masterDb[k].price}</td> <td style="text-align: right">${masterDb[k].quant}</td></tr>`;
+            <td style="text-align: right">${masterDb[k].price}</td></tr>`;
         }
 
         let names = [];
@@ -242,11 +244,10 @@ async function deleteItem(index) {
     displayList();
 }
 
-let Toast = document.querySelector('.toastNotify')
 
 async function republishChanges() {
     let whatsappData = JSON.parse(localStorage.getItem(DB_NAME))
-    handleToast('rgb(175, 255, 206)', 'Loading...', 1)
+    handleToast('white', 'Loading...', 1)
     let doesItExist = await fetch('https://hishob-app.herokuapp.com/publish/'+whatsappData.shared_index[whatsappData.current_index])
     if(doesItExist.status != 200){
         handleToastForAWhile('red', 'Failure!')
@@ -255,7 +256,7 @@ async function republishChanges() {
         displayList()
         return
     }
-    whatsappData.data.modifyTime = getDateTime()
+    whatsappData[whatsappData.current_index].data.modifyTime = getDateTime()
     fetch('https://hishob-app.herokuapp.com/publish/'+whatsappData.shared_index[whatsappData.current_index], {
         method: 'POST',
         headers: {
@@ -283,15 +284,14 @@ function handleToast(color, msg, status = 1) {
         Toast.classList.remove('animate')
 }
 
-let timout = null
-
 function handleToastForAWhile(color, msg) {
     Toast.innerText = msg
     Toast.style.backgroundColor = color
     Toast.classList.add('animate')
     timout = setTimeout(() => {
         Toast.classList.remove('animate')
-    }, 2000)
+    }, 1700)
+    
 }
 
 function clearTime() {
@@ -321,7 +321,6 @@ function displayListWithTime() {
     <tr>
 	    <th>Name</th>
 	    <th>Prices</th>
-	    <th>Quatity</th>
     </tr>`;
     if (getItem() != null) {
         let masterDb = getItem();
@@ -333,11 +332,11 @@ function displayListWithTime() {
 
         for (let k = 1; k < j; k++) {
             if (masterDb[k].timeNow != null)
-                str += `<tr> <td colspan="3" style="font-style: italic;color:var(--date-color);text-align:center;">${masterDb[k].timeNow}</td> </tr>`;
+                str += `<tr> <td colspan="2" style="font-style: italic;color:var(--date-color);text-align:center;">${masterDb[k].timeNow}</td> </tr>`;
             else
-                str += `<tr> <td colspan="3" style="font-style: italic;color:var(--date-color);text-align:center;">-- NA --</td> </tr>`;
+                str += `<tr> <td colspan="2" style="font-style: italic;color:var(--date-color);text-align:center;">-- NA --</td> </tr>`;
             str += `<tr id="${k}"> <td style="text-align: left">${masterDb[k].name}</td>
-            <td style="text-align: right">${masterDb[k].price}</td> <td style="text-align: right">${masterDb[k].quant}</td></tr>`;
+            <td style="text-align: right">${masterDb[k].price}</td> </tr>`;
         }
         let names = [];
         let quants = [];
@@ -356,7 +355,6 @@ function displayListWithTime() {
 
 function resetval() {
     document.getElementById("nameOfItem").value = "";
-    document.getElementById("quant").value = "";
     document.getElementById("price").value = "";
 }
 
@@ -378,9 +376,9 @@ function totalcalc(str, names, quants, prices) {
             total += quants[j] * prices[j];
     }
     if (total > 0)
-        str += `<tr> <td style="color: var(--green-variant);">Total</td> <td style="color: var(--green-variant);text-align:right;">${total}</td> <td>Will get</td> </tr>`;
+        str += `<tr> <td style="color: var(--green-variant);">Total</td> <td style="color: var(--green-variant);text-align:right;">${total}</td> </tr>`;
     else
-        str += `<tr> <td style="color: var(--dust-bin);">Total</td> <td style="color: var(--dust-bin);text-align:right;">${total}</td> <td>Will give</td> </tr>`;
+        str += `<tr> <td style="color: var(--dust-bin);">Total</td> <td style="color: var(--dust-bin);text-align:right;">${total}</td> </tr>`;
 
     return str;
 }

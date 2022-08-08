@@ -22,7 +22,7 @@
     --text-color: #fff;
     --title-name: rgb(255, 255, 255);
     --border-color: #CCCCCC;
-    --dust-bin: #FF8C93;
+    --dust-bin: #ff5454;
     --green-variant: #32f27f;
     --button-color: #5C5C5C;
     --menu-text: #fff;
@@ -245,7 +245,7 @@ input{
 .butnSet button:active{
     background-color: rgb(175, 175, 175);
 }
-.butnSet button:nth-child(2){
+.butnSet button:nth-child(1){
     color: var(--dust-bin);
 }
 
@@ -566,11 +566,12 @@ td:nth-child(last){
         display: flex;
     }
     .butnSet{
-        width: 50%;
+        width: 88%;
         height: 2rem;
         display: flex;
         justify-content: space-between;
         align-items: flex-end;
+        margin-top: 1rem;
     }
     #price{
         width: 30%;
@@ -578,9 +579,8 @@ td:nth-child(last){
     }
 
     .butnSet button{
-        width: 5rem;
-        height: 2rem;
-        font-size: 1rem;
+        width: 9rem;
+        height: 2.3rem;
         font-weight: bold;
         border: 2px solid var(--border-color);
         border-radius: 5px;
@@ -591,8 +591,9 @@ td:nth-child(last){
     .butnSet button:active{
         background-color: rgb(175, 175, 175);
     }
-    .butnSet button:nth-child(2){
+    .butnSet button:nth-child(1){
         color: var(--dust-bin);
+        font-size: 1.2rem;
     }
     .menuItems{
         position: fixed;
