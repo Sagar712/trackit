@@ -20,7 +20,6 @@ function displayList() {
     <tr>
 	    <th>Name</th>
 	    <th>Prices</th>
-	    <th>Quatity</th>
     </tr>`;
     if (getItem() != null) {
         let masterDb = getItem();
@@ -31,7 +30,7 @@ function displayList() {
 
         for (let k = 1; k < j; k++) {
             str += `<tr id="${k}"> <td style="text-align: left">${masterDb[k].name}</td>
-            <td style="text-align: right">${masterDb[k].price}</td> <td style="text-align: right">${masterDb[k].quant}</td></tr>`;
+            <td style="text-align: right">${masterDb[k].price}</td> </tr>`;
         }
 
         let names = [];
@@ -40,7 +39,7 @@ function displayList() {
         j = 1, i = 0;
         while (masterDb[j] != null) {
             names[i] = masterDb[j].name;
-            quants[i] = masterDb[j].quant;
+            quants[i] = null;
             prices[i++] = masterDb[j].price;
             j++;
         }
@@ -54,11 +53,11 @@ function submitChange() {
     let newData = {}
     for (let i = 1; i <= celldata.rows.length - 1; i++) {
         console.log(celldata.rows[i].cells[1].innerText+" --> "+!isNaN(celldata.rows[i].cells[1].innerText));
-        if (!isNaN(celldata.rows[i].cells[1].innerText) && !isNaN(celldata.rows[i].cells[2].innerText)) {
+        if (!isNaN(celldata.rows[i].cells[1].innerText)) {
             newData[i] = {
                 name: celldata.rows[i].cells[0].innerText,
                 price: celldata.rows[i].cells[1].innerText,
-                quant: celldata.rows[i].cells[2].innerText,
+                quant: null,
                 timeNow: masterDb[masterDb.current_index].data[i].timeNow
             }
         }

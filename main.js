@@ -58,9 +58,9 @@ async function shareList() {
         localStorage.setItem(DB_NAME, JSON.stringify(whatsappData))
     }
     if (Object.keys(whatsappData.shared_index).includes(`${whatsappData.current_index}`)) {
-        let resp = await fetch(Publish_URL+whatsappData.shared_index[whatsappData.current_index])
-        if(resp.status == 200)
-        window.location.href = `whatsapp://send?text=${Publish_URL}${whatsappData.shared_index[whatsappData.current_index]}`
+        let resp = await fetch(Publish_URL + whatsappData.shared_index[whatsappData.current_index])
+        if (resp.status == 200)
+            window.location.href = `whatsapp://send?text=${Publish_URL}${whatsappData.shared_index[whatsappData.current_index]}`
         //window.location.href =  `${Publish_URL}${whatsappData.shared_index[whatsappData.current_index]}`
     }
     else {
@@ -70,12 +70,23 @@ async function shareList() {
     }
 }
 
-function addval() {
+async function addbits(s) {
+    var total = 0,
+        s = s.match(/[+\-]*(\.\d+|\d+(\.\d+)?)/g) || [];
+
+    while (s.length) {
+        total += parseFloat(s.shift());
+    }
+    return total;
+}
+
+async function addval() {
 
     let name = document.getElementById("nameOfItem").value;
     //let quant = document.getElementById("quant").value;
     let price = document.getElementById("price").value;
-
+    let sum = await addbits(price)
+    console.log(sum);
     let masterDb = getItem();
     let j = 1;
     let i = 0;
@@ -88,12 +99,12 @@ function addval() {
     masterDb[j] = {
         name: name,
         quant: null,
-        price: price,
+        price: sum,
         timeNow: getDateTime()
     }
     console.log(masterDb);
     setItem(masterDb);
-    handleToastForAWhile('rgb(175, 255, 206)',"Added !")
+    handleToastForAWhile('rgb(175, 255, 206)', "Added !")
     if (currTimeShow)
         SwitchDisplay();
     else
@@ -141,14 +152,14 @@ function displayList() {
     document.querySelector('.file-Name').innerText = getItemName();
     let DATA = JSON.parse(localStorage.getItem(DB_NAME))
     let republish = document.querySelector('.republish')
-    if(DATA.shared_index == null){
+    if (DATA.shared_index == null) {
         DATA.shared_index = {}
         localStorage.setItem(DB_NAME, JSON.stringify(DATA))
     }
     if (DATA.shared_index && !Object.keys(DATA.shared_index).includes(`${DATA.current_index}`)) {
         republish.style.display = 'none'
     }
-    else if(DATA.shared_index!=null){
+    else if (DATA.shared_index != null) {
         republish.style.display = 'flex'
     }
 
@@ -248,8 +259,8 @@ async function deleteItem(index) {
 async function republishChanges() {
     let whatsappData = JSON.parse(localStorage.getItem(DB_NAME))
     handleToast('white', 'Loading...', 1)
-    let doesItExist = await fetch('https://hishob-app.herokuapp.com/publish/'+whatsappData.shared_index[whatsappData.current_index])
-    if(doesItExist.status != 200){
+    let doesItExist = await fetch('https://hishob-app.herokuapp.com/publish/' + whatsappData.shared_index[whatsappData.current_index])
+    if (doesItExist.status != 200) {
         handleToastForAWhile('red', 'Failure!')
         delete whatsappData.shared_index[whatsappData.current_index]
         localStorage.setItem(DB_NAME, JSON.stringify(whatsappData))
@@ -257,7 +268,7 @@ async function republishChanges() {
         return
     }
     whatsappData[whatsappData.current_index].data.modifyTime = getDateTime()
-    fetch('https://hishob-app.herokuapp.com/publish/'+whatsappData.shared_index[whatsappData.current_index], {
+    fetch('https://hishob-app.herokuapp.com/publish/' + whatsappData.shared_index[whatsappData.current_index], {
         method: 'POST',
         headers: {
             accept: 'application.json',
@@ -265,12 +276,12 @@ async function republishChanges() {
         },
         body: JSON.stringify(whatsappData[whatsappData.current_index].data)
     })
-    .then(res => {
-        return res.json()
-    })
-    .then(resp => {
-        handleToast('rgb(175, 255, 206)', 'Success!', 0)
-    })
+        .then(res => {
+            return res.json()
+        })
+        .then(resp => {
+            handleToast('rgb(175, 255, 206)', 'Success!', 0)
+        })
 }
 
 console.log(JSON.parse(localStorage.getItem(DB_NAME)));
@@ -291,11 +302,11 @@ function handleToastForAWhile(color, msg) {
     timout = setTimeout(() => {
         Toast.classList.remove('animate')
     }, 1700)
-    
+
 }
 
 function clearTime() {
-    if(timout!=null){
+    if (timout != null) {
         Toast.classList.remove('animate')
         clearTimeout(timout)
     }
@@ -559,7 +570,6 @@ function render_with_check(Id) {
     <tr>
 	    <th>Name</th>
 	    <th>Prices</th>
-	    <th>Quatity</th>
         <th></th>
     </tr>`;
     if (localStorage.getItem("AllTrackItData") != null) {
@@ -573,13 +583,13 @@ function render_with_check(Id) {
             if (k == Id) {
                 str += `<tr id="${k}"> 
                 <td style="text-align: left">${masterDb[k].name}</td>
-                <td style="text-align: right">${masterDb[k].price}</td> <td style="text-align: right">${masterDb[k].quant}</td>
+                <td style="text-align: right">${masterDb[k].price}</td>
                 <td style='display:flex; align-items:center; justify-content:center;'><input type='checkbox' checked class='checkbx'></td> </tr>`;
             }
             else {
                 str += `<tr id="${k}">
                 <td style="text-align: left">${masterDb[k].name}</td>
-                <td style="text-align: right">${masterDb[k].price}</td> <td style="text-align: right">${masterDb[k].quant}</td>
+                <td style="text-align: right">${masterDb[k].price}</td>
                 <td style='display:flex; align-items:center; justify-content:center;'><input type='checkbox' class='checkbx'></td> </tr>`;
             }
         }
