@@ -9,6 +9,12 @@ if("serviceWorker" in navigator){
     })
 }
 
+//REGEX exercise
+
+//console.log(/^[0-9+\-]*[+\-]*[0-9]+$/.test('090+7-90'));
+
+//
+
 const DB_NAME = "AllTrackItData"
 const MODE = "DarkModeTrackIt"
 const Publish_URL = "https://sagar712.github.io/trackit/publish/publish.html?id="
@@ -85,7 +91,19 @@ async function addval() {
     let name = document.getElementById("nameOfItem").value;
     //let quant = document.getElementById("quant").value;
     let price = document.getElementById("price").value;
-    let sum = await addbits(price)
+    let sum = null
+    if (/^[0-9+\-]*[+\-]*[0-9]+$/.test(price) || price == '') {
+        sum = await addbits(price)
+        console.log(sum);
+        if (isNaN(sum)) {
+            handleToastForAWhile('rgb(236, 96, 96)', 'Bad expression')
+            return
+        }
+    }
+    else {
+        handleToastForAWhile('rgb(236, 96, 96)', 'Bad expression')
+        return
+    }
     console.log(sum);
     let masterDb = getItem();
     let j = 1;
@@ -284,7 +302,7 @@ async function republishChanges() {
         })
 }
 
-console.log(JSON.parse(localStorage.getItem(DB_NAME)));
+// console.log(JSON.parse(localStorage.getItem(DB_NAME)));
 
 function handleToast(color, msg, status = 1) {
     Toast.innerText = msg
